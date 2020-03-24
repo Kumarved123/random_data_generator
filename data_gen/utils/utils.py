@@ -144,7 +144,7 @@ def to_xml(df, filename=None, mode='w'):
     if filename is None:
         return str(res)
     with open(filename, mode) as f:
-        f.write(str(res.encode('utf8')))
+        f.write(str(res))
 
 #function implementation
 import re
@@ -181,6 +181,7 @@ def enforce_function(string, data, num):
     try:
         (exec(string))
     except:
+        global uppercase
         uppercase = data
     return uppercase
 

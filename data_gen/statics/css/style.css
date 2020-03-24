@@ -57,3 +57,7 @@ body {
 i #one :active {
     background: olive;
 }
+
+input[type=number] {
+    width: 20px;
+}
