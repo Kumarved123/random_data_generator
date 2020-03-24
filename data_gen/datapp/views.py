@@ -52,9 +52,13 @@ def main(request):
             elif i == 'Row Number':
                 tempdata = []
                 for j in range(1,int(nrows[0])+1):
-                    data = str(j+1)
+                    data = str(j)
                     string = formula[field_type.index(i)]
-                    newValue = enforce_function(string, data, 2)
+                    if "if" in string:
+                        print('yes it is there')
+                        newValue = enforce_function(string, data, 3)
+                    else:
+                        newValue = enforce_function(string, data, 2)
                     tempdata.append(newValue)
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
@@ -347,7 +351,12 @@ def main(request):
             elif i == 'Number':
                 tempdata = []
                 for j in range(int(nrows[0])):
-                    tempdata.append(number())
+                    data = number()
+                    string = formula[field_type.index(i)]
+                    if "if" in string:
+                        newValue = enforce_function(string, data, 3)
+                    else:
+                        newValue = enforce_function(string, data, 2)
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
