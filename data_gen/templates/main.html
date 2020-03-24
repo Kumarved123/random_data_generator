@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> {% load static %}
+    <!-- Bootstrap CSS -->
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.1/knockout-latest.debug.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css'%}">
+    <style>
+
+    </style>
+    <title>Random Data Generator</title>
+
+</head>
+
+<body>
+    <!-- Head -->
+    <div class="head">
+        <h1>Random Data Generator</h1>
+    </div>
+    <!-- Head -->
+
+    <form id="myForm" action=" " method="post">
+        {% csrf_token %}
+        <!-- Field Table -->
+        <div class="container upperbox" style="width:1200px; border-radius:5px; padding: 10px;">
+            <div class="col-12">
+                <table class="myTable" id="dataTable">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Feild Nmae</th>
+                            <th style="min-width: 200px;">Feild Type</th>
+                            <th style="min-width: 200px;">Can be empty ?</th>
+                            <th style="min-width: 200px;">Options</th>
+                            <th style="min-width: 200px;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="template:{name:'tableRow', foreach: tableRows}">
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+        <!-- Field Table -->
+
+        <!-- Lower Table -->
+        <div class="container upperbox" style="width:1200px; border-radius:5px; padding: 10px;">
+            <h5>Generation Options</h5>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td>
+                            <label for="fname">Number of rows:</label>
+                            <input type="text" id="fname" name="fname" size="4" placeholder="00000"><br>
+                        </td>
+                        <td>
+                            <label for="format">Export Format:</label>
+                            <select name="fileExport">
+                                <option value="CSV">CSV</option>
+                                <option value="JSON">JSON</option>
+                                <option value="TSV">Tab Delimited</option>
+                                <option value="Excel">Excel</option>
+                                <option value="XML">XML</option>
+                                <option value="SQL">SQL</option>
+                            </select>
+                        </td>
+                        <td>
+                            <label for="fname">Line ending Style:</label>
+                            <select name="l_ending_style">
+                                <option value="Unix">Unix(LF)</option>
+                                <option value="Windows(CRLF)">Windows(CRLF)</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="submit" value="Preview" id="previewbutton" class="btn btn-primary" name="button" alt="#TB_inline?width=400&height=250&inlineId=mailpreview&modal=true" style="color: white;">
+                            <button type="submit" value="download" id="downloadbutton" class="btn btn-primary" name="button" alt="#TB_inline?width=400&height=250&inlineId=mailpreview&modal=true">Download</button>
+                        </td>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <!-- Lower Table -->
+
+
+    </form>
+
+    <div id="myModal" class="modal" style="display:{{popup}};">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Random data preview</h4>
+                    <button type="button" class="btn btn-outline-dark" id="crossbtn" data-dismiss="modal">&times;</button>
+                </div>
+                <div style="height: 450px; overflow: scroll; ">
+                    <div class="table" style="width: 50%;margin:10px; text-align: center; ">
+                        {% autoescape off %}{{ table_content }}{% endautoescape %}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="closebutton" class="btn btn-danger" data-dismiss="modal">close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="nomyModal" class="modal" style="display:{{nodata}};">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Message</h5>
+                </div>
+                <h6 style="text-align: center; padding: 5px;">No field was filled !!!</h6>
+                <div class="modal-footer">
+                    <button type="button" id="noclosebutton" class="btn btn-danger" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+
+        <script id="tableRow" type="text/html">
+            <tr>
+                <td><i class="fa fa-navicon"></i></td>
+                <td>
+                    <input type="text" class="target" name="fieldName" size="27px" placeholder="Feild Name" data-bind="value: number, valueUpdate: 'keyup'" />
+                </td>
+                <td>
+                    <input type="text" data-toggle="modal" name="fieldType" data-target="#selectmodel" value="---" onclick='selector(this)'>
+                </td>
+                <td><input class='testName' type='checkbox' value='Yes' name='Empty'>
+                    <input class='testNameHidden' type='hidden' value='No' name='Empty'>
+                </td>
+                <td>
+                    <p style="font-size: xx-small;">can be empty<input type="text" name="valEmpty" size="2" style="font-size: 12px;">% of the time
+                    </p>
+                </td>
+
+                <td><span><i class="fa fa-code" id="one" style="margin-right:20px;" data-toggle="modal" data-target="#functionmodel" onclick="changefun(this)"></i><i class="fa fa-trash"  style="color: red;" onclick="SomeDeleteRowFunction(this)" ></i></span></td>
+
+            </tr>
+        </script>
+        <script>
+            function tableRow(number, ownerViewModel) {
+                this.number = ko.observable(number);
+                this.remove = function() {
+                    ownerViewModel.tableRows.destroy(this);
+                }
+            }
+
+            function tableRowsViewModel() {
+                var that = this;
+                this.tableRows = ko.observableArray([]);
+                this.addNewRow = function() {
+                    this.tableRows.push(new tableRow('', that));
+                }
+                this.addNewRow();
+
+                //dependentObservable to represent the last row's value
+                this.lastRowValue = ko.dependentObservable(function() {
+                    var rows = that.tableRows();
+                    return rows.length ? rows[rows.length - 1].number() : null;
+                });
+
+                //subscribe to changes to the last row
+                this.lastRowValue.subscribe(function(newValue) {
+                    if (newValue) {
+                        that.tableRows.push(new tableRow('', that));
+                    }
+                });
+            }
+
+            $(document).ready(function() {
+                ko.applyBindings(new tableRowsViewModel());
+            });
+        </script>
+
+
+
+        <!-- The Modal -->
+        <div class="modal fade" id="selectmodel">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title ">Select the Field Type</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="container-md ">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="card mycard" id="guid" onclick="guid()">
+                                        <div class="card-body">
+                                            <h5 class="card-title mytitle">GUID</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted subhead">Unique sequence of 36 Haxadecimal digits</h6>
+                                            <p class="card-text">00773ece-6bea-11ea-9031-204747c5a17a</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card mycard">
+                                        <div class="card-body" id="rownumber" onclick="rownumber()">
+                                            <h5 class="card-title mytitle">Row Number</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted subhead">Number of the row in the table</h6>
+                                            <p class="card-text">1<br>2<br>3</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card mycard" id="firstname" onclick="firstname()">
+                                        <div class="card-body">
+                                            <h5 class="card-title mytitle">First Name</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted subhead">First name of the person</h6>
+                                            <p class="card-text">Jhon</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card mycard" id="lastrow" onclick="lastname()">
+                                        <div class="card-body">
+                                            <h5 class="card-title mytitle">Last Name</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted subhead">Last Name of the Person</h6>
+                                            <p class="card-text">Doe</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="card mycard" id="fullname" onclick="fullname()">
+                                        <div class="card-body">
+                                            <h5 class="card-title mytitle">Full Name</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted subhead">Full name of the person</h6>
+                                            <p class="card-text">Jhon Doe</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card mycard" id="male" onclick="firstnamemale()">
+                                        <div class="card-body">
+                                            <h5 class="card-title mytitle">First Name(Male)</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted subhead">First name of the man</h6>
+                                            <p class="card-text">Jhon</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card mycard" id="female" onclick="firstnamefemale()">
+                                        <div class="card-body">
+                                            <h5 class="card-title mytitle">First Name(Female)</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted subhead">First name of the women</h6>
+                                            <p class="card-text">Jene</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card mycard" id="email" onclick="email()">
+                                        <div class="card-body">
+                                            <h5 class="card-title mytitle">Email</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted subhead">email of person</h6>
+                                            <p class="card-text">Doe</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="card mycard" id="username" onclick="username()">
+                                        <div class="card-body">
+                                            <h5 class="card-title mytitle">Username</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted subhead">Unique sequence of 36 Haxadecimal digits</h6>
+                                            <p class="card-text">00773ece-6bea-11ea-9031-204747c5a17a</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card mycard" id="company" onclick="companyname()">
+                                        <div class="card-body">
+                                            <h5 class="card-title mytitle">Company Name</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted subhead">Number of the row in the table</h6>
+                                            <p class="card-text">1<br>2<br>3</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card mycard" id="ipaddressv4" onclick="ipaddress4()">
+                                        <div class="card-body">
+                                            <h5 class="card-title mytitle">Ip Address(V4)</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted subhead">First name of the person</h6>
+                                            <p class="card-text">Jhon</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card mycard" id="ipaddressv6" onclick="ipaddress6()">
+                                        <div class="card-body">
+                                            <h5 class="card-title mytitle">Ip Address(V6)</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted subhead">Last Name of the Person</h6>
+                                            <p class="card-text">Doe</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="card mycard" id="language" onclick="language()">
+                                        <div class="card-body">
+                                            <h5 class="card-title mytitle">Language</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted subhead">Unique sequence of 36 Haxadecimal digits</h6>
+                                            <p class="card-text">00773ece-6bea-11ea-9031-204747c5a17a</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card mycard" id="jobtitle" onclick="jobtitle()">
+                                        <div class="card-body">
+                                            <h5 class="card-title mytitle">Job Title</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted subhead">Number of the row in the table</h6>
+                                            <p class="card-text">1<br>2<br>3</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card mycard" id="programming" onclick="programming()">
+                                        <div class="card-body">
+                                            <h5 class="card-title mytitle">Programming Language</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted subhead">First name of the person</h6>
+                                            <p class="card-text">Jhon</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card mycard" id="currency" onclick="currency()">
+                                        <div class="card-body">
+                                            <h5 class="card-title mytitle">Currency</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted subhead">Last Name of the Person</h6>
+                                            <p class="card-text">Doe</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="card mycard" id="symbol" onclick="symbol()">
+                                        <div class="card-body">
+                                            <h5 class="card-title mytitle">Currency Symbol</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted subhead">Unique sequence of 36 Haxadecimal digits</h6>
+                                            <p class="card-text">00773ece-6bea-11ea-9031-204747c5a17a</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card mycard" id="number" onclick="number()">
+                                        <div class="card-body">
+                                            <h5 class="card-title mytitle">Number</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted subhead">Number of the row in the table</h6>
+                                            <p class="card-text">1<br>2<br>3</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card mycard" id="Phone" onclick="phone()">
+                                        <div class="card-body">
+                                            <h5 class="card-title mytitle">Phone Number</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted subhead">First name of the person</h6>
+                                            <p class="card-text">Jhon</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card mycard" id="Domain" onclick="domainname()">
+                                        <div class="card-body">
+                                            <h5 class="card-title mytitle">Domain Name</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted subhead">Last Name of the Person</h6>
+                                            <p class="card-text">Doe</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="functionmodel" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Modal Header</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>This is a small modal.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+    <script src="{% static 'js/project.js'%}"></script>
+    <script src="{% static 'js/show.js'%}"></script>
+
+</body>
+
+</html>

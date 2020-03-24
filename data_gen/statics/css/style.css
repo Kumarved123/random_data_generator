@@ -1,0 +1,59 @@
+* {
+    font-family: system-ui;
+}
+
+body {
+    background-color: #EEEEEE;
+}
+
+.head {
+    background-color: #696969;
+    color: White;
+    text-align: center;
+}
+
+.myTable {
+    border-radius: 5px;
+}
+
+.myTable td,
+.myTable tr {
+    height: 30px;
+    width: 30px;
+    text-align: center;
+    vertical-align: middle;
+    border-bottom: 1px solid #ddd;
+}
+
+.upperbox {
+    margin-top: 50px;
+    background: white;
+    box-shadow: 1px 4px 8px rgba(0, 0, 0, .6);
+}
+
+.mycard {
+    height: 110px;
+    margin-top: 12px;
+    font-size: 8px;
+    padding: 0px;
+}
+
+.subhead {
+    font-size: 8px;
+}
+
+.mytitle {
+    font-size: 16px;
+}
+
+#selectmodel {
+    cursor: pointer;
+}
+
+.mycard:hover {
+    background-color: red;
+}
+
+i #one :active {
+    background: olive;
+}
