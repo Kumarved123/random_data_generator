@@ -51,3 +51,11 @@ function formulas() {
 if (document.getElementsByClassName("testName").checked) {
     document.getElementsByClassName('testNameHidden').value = 'on';
 }
+
+function validateForm() {
+    var x = document.forms["myForm"]["fname"].value;
+    if (x == "" || x == null) {
+        alert("Name must be filled out");
+        return false;
+    }
+}
