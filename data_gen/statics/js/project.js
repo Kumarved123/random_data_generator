@@ -39,6 +39,14 @@ function SomeDeleteRowFunction(o) {
     }
 }
 
+function formulas() {
+    // Selecting the input element and get its value 
+    var inputVal = document.getElementById("exampleFormControlTextarea1").value;
+
+    var newvalue = document.getElementById("formulas").value = inputVal;
+    inputVal = ""
+}
+
 if (document.getElementsByClassName("testName").checked) {
     document.getElementsByClassName('testNameHidden').value = 'on';
 }

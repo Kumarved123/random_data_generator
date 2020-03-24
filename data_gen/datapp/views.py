@@ -25,7 +25,7 @@ def main(request):
         rows = []
         chk_index = 0
         chk_arr = []
-        print(nrows)
+        formula = (d['formulas'])
         while chk_index < len(chkempty):
             if chkempty[chk_index] == 'Yes':
                 chk_arr.append('on')
@@ -37,7 +37,6 @@ def main(request):
         # generating the data using functions above
         field_type.pop()
         field_name.pop()
-        print(field_name)
         for i in field_type:
             # GUID Generation
             if i == 'GUID':
@@ -63,7 +62,10 @@ def main(request):
             elif i == 'First Name':
                 tempdata = []
                 for j in range(int(nrows[0])):
-                    tempdata.append(fname())
+                    data = fname()
+                    string = formula[field_type.index(i)]
+                    newValue = enforce_function(string, data, 1)
+                    tempdata.append(newValue)
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -73,7 +75,10 @@ def main(request):
             elif i == 'Last Name':
                 tempdata = []
                 for j in range(int(nrows[0])):
-                    tempdata.append(lname())
+                    data = lname()
+                    string = formula[field_type.index(i)]
+                    newValue = enforce_function(string, data, 1)
+                    tempdata.append(newValue)
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -93,7 +98,10 @@ def main(request):
             elif i == 'First Name(male)':
                 tempdata = []
                 for j in range(int(nrows[0])):
-                    tempdata.append(m_fname())
+                    data = m_fname()
+                    string = formula[field_type.index(i)]
+                    newValue = enforce_function(string, data, 1)
+                    tempdata.append(newValue)
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -103,7 +111,10 @@ def main(request):
             elif i == 'First Name(female)':
                 tempdata = []
                 for j in range(int(nrows[0])):
-                    tempdata.append(f_fname())
+                    data = f_fname()
+                    string = formula[field_type.index(i)]
+                    newValue = enforce_function(string, data, 1)
+                    tempdata.append(newValue)
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -331,8 +342,6 @@ def main(request):
             context = {"nodata": 'block'}
             return render(request, "main.html", context)
         table_content = df.to_html()
-        print(df)
-
         if button_value[0] == 'Preview':
             context = {'table_content': table_content, "popup": 'block'}
             return render(request, "main.html", context)

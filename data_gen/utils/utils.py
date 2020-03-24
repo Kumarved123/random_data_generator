@@ -152,7 +152,7 @@ def upper(string):
     return string.upper()
 
 def lower(string):
-    return string,lower()
+    return string.lower()
 
 name = hex
 def hex(hex_str):
