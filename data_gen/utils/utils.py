@@ -29,7 +29,7 @@ def lname ():
     return fake.last_name()
 
 # function to generate random full name
-def name ():
+def fullname():
     return fake.name()
 
 # function to generate random female_first_name
@@ -61,11 +61,11 @@ def job():
     return fake.job()
 
 # function to generate currency
-def currency():
+def Currency():
     return fake.currency()
 
 # function to generate email
-def email():
+def Email():
     return fake.email()
 
 # function to generate mobile number
@@ -171,14 +171,17 @@ def enforce_function(string, data, num):
     string = re.sub("elif ", "\n\telif ", string)
     string = re.sub("else ", "\n\telse:\n\t\tuppercase =", string)
     string = (re.sub("this", data, string))
+
     if num == 1:
         string = "def fun():\n\t" + data + '= \'' + data +'\'' +'\n' + '\tnumber ='+string + '\n\tglobal uppercase \n\tuppercase = (number)'+'\ndata = fun()'
     elif num == 2:
         string = "def fun():\n\t"+ "global uppercase" + "\n\tuppercase ="+ string +'\ndata = fun()'
     elif num == 3:
         string = "def fun():\n\t"+ "global uppercase\n\t" +string+'\ndata = fun()'
-    
-    (exec(string))
+    try:
+        (exec(string))
+    except:
+        uppercase = data
     return uppercase
 
  

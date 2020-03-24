@@ -50,7 +50,7 @@
             </div>
         </div>
         <!-- Field Table -->
-        <input type="hidden" id="formulas" name="formulas" value="3487">
+
         <!-- Lower Table -->
         <div class="container upperbox" style="width:1200px; border-radius:5px; padding: 10px;">
             <h5>Generation Options</h5>
@@ -129,7 +129,7 @@
             <tr>
                 <td><i class="fa fa-navicon"></i></td>
                 <td>
-                    <input type="text" class="target" name="fieldName" size="27px" placeholder="Feild Name" data-bind="value: number, valueUpdate: 'keyup'" />
+                    <input type="text" class="target" name="fieldName" size="27px" placeholder="Feild Name" autocomplete="off" data-bind="value: number, valueUpdate: 'keyup'" />
                 </td>
                 <td>
                     <input type="text" data-toggle="modal" name="fieldType" data-target="#selectmodel" value="---" onclick='selector(this)'>
@@ -142,7 +142,7 @@
                     </p>
                 </td>
 
-                <td><span><i class="fa fa-code" id="one" style="margin-right:20px;" data-toggle="modal" data-target="#functionmodel" onclick="changefun(this)"></i><i class="fa fa-trash"  style="color: red;" onclick="SomeDeleteRowFunction(this)" ></i></span></td>
+                <td><span><i class="fa fa-code" style="margin-right:20px;" data-toggle="modal" data-target="#functionmodel" onclick="changefun(this)"><input type="hidden" id="formulas" name="formulas" value="3487"></i><i class="fa fa-trash"  style="color: red;" onclick="SomeDeleteRowFunction(this)" ></i></span></td>
 
             </tr>
         </script>

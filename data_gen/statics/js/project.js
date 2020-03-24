@@ -20,10 +20,6 @@ nobtn.onclick = function nogoBack() {
     window.history.back()
 }
 
-function changefun(o) {
-    o.style.color = "blue";
-}
-
 function SomeDeleteRowFunction(o) {
     var table = o.parentNode.parentNode.parentNode.parentNode.parentNode;
     var rowCount = table.rows.length;
@@ -38,13 +34,18 @@ function SomeDeleteRowFunction(o) {
         }
     }
 }
+var newvalue;
+
+function changefun(o) {
+    newvalue = o.childNodes[0];
+    o.style.color = "blue";
+}
 
 function formulas() {
     // Selecting the input element and get its value 
-    var inputVal = document.getElementById("exampleFormControlTextarea1").value;
-
-    var newvalue = document.getElementById("formulas").value = inputVal;
-    inputVal = ""
+    var inputVal = document.getElementById("exampleFormControlTextarea1");
+    newvalue.value = inputVal.value;
+    inputVal.value = '';
 }
 
 if (document.getElementsByClassName("testName").checked) {

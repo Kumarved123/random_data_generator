@@ -52,7 +52,10 @@ def main(request):
             elif i == 'Row Number':
                 tempdata = []
                 for j in range(1,int(nrows[0])+1):
-                    tempdata.append(str(j))
+                    data = str(j+1)
+                    string = formula[field_type.index(i)]
+                    newValue = enforce_function(string, data, 2)
+                    tempdata.append(newValue)
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -64,8 +67,17 @@ def main(request):
                 for j in range(int(nrows[0])):
                     data = fname()
                     string = formula[field_type.index(i)]
-                    newValue = enforce_function(string, data, 1)
-                    tempdata.append(newValue)
+                    if "if" in string and "else" in string:
+                        newValue = enforce_function(string, data, 3)
+                    else:
+                        datas = data
+                        newValue = ''
+                        for data in datas.split():
+                            newValue = newValue + ' ' +  enforce_function(string, data, 1)
+                    try:
+                        tempdata.append(newValue)
+                    except:
+                        tempdata.append(fname())
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -77,8 +89,17 @@ def main(request):
                 for j in range(int(nrows[0])):
                     data = lname()
                     string = formula[field_type.index(i)]
-                    newValue = enforce_function(string, data, 1)
-                    tempdata.append(newValue)
+                    if "if" in string and "else" in string:
+                        newValue = enforce_function(string, data, 3)
+                    else:
+                        datas = data
+                        newValue = ''
+                        for data in datas.split():
+                            newValue = newValue + ' ' +  enforce_function(string, data, 1)
+                    try:
+                        tempdata.append(newValue)
+                    except:
+                        tempdata.append(lname())
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -88,7 +109,19 @@ def main(request):
             elif i == 'Full Name':
                 tempdata = []
                 for j in range(int(nrows[0])):
-                    tempdata.append(name())
+                    data = fullname()
+                    string = formula[field_type.index(i)]
+                    if "if" in string and "else" in string:
+                        newValue = enforce_function(string, data, 3)
+                    else:
+                        datas = data
+                        newValue = ''
+                        for data in datas.split():
+                            newValue = newValue + ' ' +  enforce_function(string, data, 1)
+                    try:
+                        tempdata.append(newValue)
+                    except:
+                        tempdata.append(fullname())
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -98,10 +131,19 @@ def main(request):
             elif i == 'First Name(male)':
                 tempdata = []
                 for j in range(int(nrows[0])):
-                    data = m_fname()
+                    data = f_fname()
                     string = formula[field_type.index(i)]
-                    newValue = enforce_function(string, data, 1)
-                    tempdata.append(newValue)
+                    if "if" in string and "else" in string:
+                        newValue = enforce_function(string, data, 3)
+                    else:
+                        datas = data
+                        newValue = ''
+                        for data in datas.split():
+                            newValue = newValue + ' ' +  enforce_function(string, data, 1)
+                    try:
+                        tempdata.append(newValue)
+                    except:
+                        tempdata.append(f_fname())
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -111,10 +153,19 @@ def main(request):
             elif i == 'First Name(female)':
                 tempdata = []
                 for j in range(int(nrows[0])):
-                    data = f_fname()
+                    data = m_fname()
                     string = formula[field_type.index(i)]
-                    newValue = enforce_function(string, data, 1)
-                    tempdata.append(newValue)
+                    if "if" in string and "else" in string:
+                        newValue = enforce_function(string, data, 3)
+                    else:
+                        datas = data
+                        newValue = ''
+                        for data in datas.split():
+                            newValue = newValue + ' ' +  enforce_function(string, data, 1)
+                    try:
+                        tempdata.append(newValue)
+                    except:
+                        tempdata.append(m_fname())
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -124,7 +175,19 @@ def main(request):
             elif i == 'Email':
                 tempdata = []
                 for j in range(int(nrows[0])):
-                    tempdata.append(email())
+                    data = Email()
+                    string = formula[field_type.index(i)]
+                    if "if" in string and "else" in string:
+                        newValue = enforce_function(string, data, 3)
+                    else:
+                        datas = data
+                        newValue = ''
+                        for data in datas.split():
+                            newValue = newValue + ' ' +  enforce_function(string, data, 1)
+                    try:
+                        tempdata.append(newValue)
+                    except:
+                        tempdata.append(Email())
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -134,7 +197,19 @@ def main(request):
             elif i == 'Username':
                 tempdata = []
                 for j in range(int(nrows[0])):
-                    tempdata.append(username())
+                    data = username()
+                    string = formula[field_type.index(i)]
+                    if "if" in string and "else" in string:
+                        newValue = enforce_function(string, data, 3)
+                    else:
+                        datas = data
+                        newValue = ''
+                        for data in datas.split():
+                            newValue = newValue + ' ' +  enforce_function(string, data, )
+                    try:
+                        tempdata.append(newValue)
+                    except:
+                        tempdata.append(username())
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -144,7 +219,19 @@ def main(request):
             elif i == 'Comapny Name':
                 tempdata = []
                 for j in range(int(nrows[0])):
-                    tempdata.append(comapny())
+                    data = comapny()
+                    string = formula[field_type.index(i)]
+                    if "if" in string and "else" in string:
+                        newValue = enforce_function(string, data, 3)
+                    else:
+                        datas = data
+                        newValue = ''
+                        for data in datas.split():
+                            newValue = newValue + ' ' +  enforce_function(string, data, 1)
+                    try:
+                        tempdata.append(newValue)
+                    except:
+                        tempdata.append(comapny())
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -174,7 +261,19 @@ def main(request):
             elif i == 'Job Title':
                 tempdata = []
                 for j in range(int(nrows[0])):
-                    tempdata.append(job())
+                    data = job()
+                    string = formula[field_type.index(i)]
+                    if "if" in string and "else" in string:
+                        newValue = enforce_function(string, data, 3)
+                    else:
+                        datas = data
+                        newValue = ''
+                        for data in datas.split():
+                            newValue = newValue + ' ' +  enforce_function(string, data, 1)
+                    try:
+                        tempdata.append(newValue)
+                    except:
+                        tempdata.append(job())
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -194,7 +293,19 @@ def main(request):
             elif i == 'Programming Language':
                 tempdata = []
                 for j in range(int(nrows[0])):
-                    tempdata.append(planguage())
+                    data = planguage()
+                    string = formula[field_type.index(i)]
+                    if "if" in string and "else" in string:
+                        newValue = enforce_function(string, data, 3)
+                    else:
+                        datas = data
+                        newValue = ''
+                        for data in datas.split():
+                            newValue = newValue + ' ' +  enforce_function(string, data, 1)
+                    try:
+                        tempdata.append(newValue)
+                    except:
+                        tempdata.append(planguage())
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -204,7 +315,19 @@ def main(request):
             elif i == 'Currency':
                 tempdata = []
                 for j in range(int(nrows[0])):
-                    tempdata.append(currency())
+                    data = Currency()
+                    string = formula[field_type.index(i)]
+                    if "if" in string and "else" in string:
+                        newValue = enforce_function(string, data, 3)
+                    else:
+                        datas = data
+                        newValue = ''
+                        for data in datas.split():
+                            newValue = newValue + ' ' +  enforce_function(string, data, 1)
+                    try:
+                        tempdata.append(newValue)
+                    except:
+                        tempdata.append(Currency())
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -274,7 +397,19 @@ def main(request):
             elif i == 'Time Zone':
                 tempdata = []
                 for j in range(int(nrows[0])):
-                    tempdata.append(timezone())
+                    data = timezone()
+                    string = formula[field_type.index(i)]
+                    if "if" in string and "else" in string:
+                        newValue = enforce_function(string, data, 3)
+                    else:
+                        datas = data
+                        newValue = ''
+                        for data in datas.split():
+                            newValue = newValue + ' ' +  enforce_function(string, data, 1)
+                    try:
+                        tempdata.append(newValue)
+                    except:
+                        tempdata.append(timezone())
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -284,7 +419,19 @@ def main(request):
             elif i == 'Boolean':
                 tempdata = []
                 for j in range(int(nrows[0])):
-                    tempdata.append(boolean())
+                    data = boolean()
+                    string = formula[field_type.index(i)]
+                    if "if" in string and "else" in string:
+                        newValue = enforce_function(string, data, 3)
+                    else:
+                        datas = data
+                        newValue = ''
+                        for data in datas.split():
+                            newValue = newValue + ' ' +  enforce_function(string, data, 1)
+                    try:
+                        tempdata.append(newValue)
+                    except:
+                        tempdata.append(boolean())
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -314,7 +461,19 @@ def main(request):
             elif i == 'Title':
                 tempdata = []
                 for j in range(int(nrows[0])):
-                    tempdata.append(nametitle())
+                    data = nametitle()
+                    string = formula[field_type.index(i)]
+                    if "if" in string and "else" in string:
+                        newValue = enforce_function(string, data, 1)
+                    else:
+                        newValue = ''
+                        for data in datas.split():
+                            newValue = newValue + ' ' +  enforce_function(string, data, 1)
+                    try:
+                        datas = data
+                        tempdata.append(newValue)
+                    except:
+                        tempdata.append(name_title())
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -324,7 +483,19 @@ def main(request):
             elif i == 'Gender':
                 tempdata = []
                 for j in range(int(nrows[0])):
-                    tempdata.append(gender())
+                    data = gender()
+                    string = formula[field_type.index(i)]
+                    if "if" in string and "else" in string:
+                        newValue = enforce_function(string, data, 1)
+                    else:
+                        datas = data
+                        newValue = ''
+                        for data in datas.split():
+                            newValue = newValue + ' ' +  enforce_function(string, data, 1)
+                    try:
+                        tempdata.append(newValue)
+                    except:
+                        tempdata.append(gender())
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
