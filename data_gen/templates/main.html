@@ -13,20 +13,19 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{% static 'css/style.css'%}">
-    <style>
-
-    </style>
     <title>Random Data Generator</title>
 
 </head>
 
 <body>
+
     <!-- Head -->
     <div class="head">
         <h1>Random Data Generator</h1>
     </div>
     <!-- Head -->
 
+    <!--form   -->
     <form id="myForm" action=" " onsubmit="return validateForm()" method="post">
         {% csrf_token %}
         <!-- Field Table -->
@@ -80,7 +79,7 @@
                             </select>
                         </td>
                         <td>
-                            <input type="submit" value="Preview" id="previewbutton" class="btn btn-primary" name="button" alt="#TB_inline?width=400&height=250&inlineId=mailpreview&modal=true" style="color: white;">
+                            <button type="text" value="Preview" id="previewbutton" class="btn btn-primary" name="button" alt="#TB_inline?width=400&height=250&inlineId=mailpreview&modal=true" style="color: white;">preview</button>
                             <button type="submit" value="download" id="downloadbutton" class="btn btn-primary" name="button" alt="#TB_inline?width=400&height=250&inlineId=mailpreview&modal=true">Download</button>
                         </td>
                     </tr>
@@ -91,7 +90,9 @@
 
 
     </form>
+    <!--form   -->
 
+    <!-- modal to display preview -->
     <div id="myModal" class="modal" style="display:{{popup}};">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -110,79 +111,84 @@
             </div>
         </div>
     </div>
+    <!-- modal to display preview -->
+
+    <!-- modal to display error when form is empty -->
     <div id="nomyModal" class="modal" style="display:{{nodata}};">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Message</h5>
                 </div>
-                <h6 style="text-align: center; padding: 5px;">No field was filled !!!</h6>
+                <h6 style="text-align: center; padding: 5px;">No field in this table !!!</h6>
                 <div class="modal-footer">
                     <button type="button" id="noclosebutton" class="btn btn-danger" data-dismiss="modal">OK</button>
                 </div>
             </div>
         </div>
     </div>
-    <div class="container">
+    <!-- modal to display error when form is empty -->
 
-        <script id="tableRow" type="text/html">
-            <tr>
-                <td><i class="fa fa-navicon"></i></td>
-                <td>
-                    <input type="text" class="target" name="fieldName" size="27px" placeholder="Feild Name" autocomplete="off" data-bind="value: number, valueUpdate: 'keyup'" />
-                </td>
-                <td>
-                    <input type="text" data-toggle="modal" name="fieldType" data-target="#selectmodel" value="---" onclick='selector(this)'>
-                </td>
-                <td><input class='testName' type='checkbox' value='Yes' name='Empty'>
-                    <input class='testNameHidden' type='hidden' value='No' name='Empty'>
-                </td>
-                <td>
-                    <p style="font-size: xx-small;">can be empty<input type="text" name="valEmpty" size="2" style="font-size: 12px;">% of the time
-                    </p>
-                </td>
+    <!-- ddynamic part of the form  -->
+    <script id="tableRow" type="text/html">
+        <tr>
+            <td><i class="fa fa-navicon"></i></td>
+            <td>
+                <input type="text" class="target" name="fieldName" size="27px" placeholder="Feild Name" autocomplete="off" data-bind="value: number, valueUpdate: 'keyup'" />
+            </td>
+            <td>
+                <input type="text" data-toggle="modal" name="fieldType" data-target="#selectmodel" value="---" onclick='selector(this)'>
+            </td>
+            <td><input class='testName' type='checkbox' value='Yes' name='Empty'>
+                <input class='testNameHidden' type='hidden' value='No' name='Empty'>
+            </td>
+            <td>
+                <p style="font-size: xx-small;">can be empty<input type="text" name="valEmpty" size="2" style="font-size: 12px;">% of the time
+                </p>
+            </td>
 
-                <td><span><i class="fa fa-code" style="margin-right:20px;" data-toggle="modal" data-target="#functionmodel" onclick="changefun(this)"><input type="hidden" id="formulas" name="formulas" value="3487"></i><i class="fa fa-trash"  style="color: red;" onclick="SomeDeleteRowFunction(this)" ></i></span></td>
+            <td><span><i class="fa fa-code" style="margin-right:20px;" data-toggle="modal" data-target="#functionmodel" onclick="changefun(this)"><input type="hidden" id="formulas" name="formulas" value="3487"></i><i class="fa fa-trash"  style="color: red;" onclick="SomeDeleteRowFunction(this)" ></i></span></td>
 
-            </tr>
-        </script>
-        <script>
-            function tableRow(number, ownerViewModel) {
-                this.number = ko.observable(number);
-                this.remove = function() {
-                    ownerViewModel.tableRows.destroy(this);
-                }
+        </tr>
+    </script>
+    <script>
+        function tableRow(number, ownerViewModel) {
+            this.number = ko.observable(number);
+            this.remove = function() {
+                ownerViewModel.tableRows.destroy(this);
             }
+        }
 
-            function tableRowsViewModel() {
-                var that = this;
-                this.tableRows = ko.observableArray([]);
-                this.addNewRow = function() {
-                    this.tableRows.push(new tableRow('', that));
-                }
-                this.addNewRow();
-
-                //dependentObservable to represent the last row's value
-                this.lastRowValue = ko.dependentObservable(function() {
-                    var rows = that.tableRows();
-                    return rows.length ? rows[rows.length - 1].number() : null;
-                });
-
-                //subscribe to changes to the last row
-                this.lastRowValue.subscribe(function(newValue) {
-                    if (newValue) {
-                        that.tableRows.push(new tableRow('', that));
-                    }
-                });
+        function tableRowsViewModel() {
+            var that = this;
+            this.tableRows = ko.observableArray([]);
+            this.addNewRow = function() {
+                this.tableRows.push(new tableRow('', that));
             }
+            this.addNewRow();
 
-            $(document).ready(function() {
-                ko.applyBindings(new tableRowsViewModel());
+            //dependentObservable to represent the last row's value
+            this.lastRowValue = ko.dependentObservable(function() {
+                var rows = that.tableRows();
+                return rows.length ? rows[rows.length - 1].number() : null;
             });
-        </script>
 
+            //subscribe to changes to the last row
+            this.lastRowValue.subscribe(function(newValue) {
+                if (newValue) {
+                    that.tableRows.push(new tableRow('', that));
+                }
+            });
+        }
 
+        $(document).ready(function() {
+            ko.applyBindings(new tableRowsViewModel());
+        });
+    </script>
+    <!-- ddynamic part of the form  -->
 
+    <!-- form to diaply field type option -->
+    <div class="container">
         <!-- The Modal -->
         <div class="modal fade" id="selectmodel">
             <div class="modal-dialog modal-lg">
@@ -199,7 +205,7 @@
                         <div class="container-md ">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <div class="card mycard" id="guid" onclick="guid()">
+                                    <div class="card mycard" id="guid" onclick="guid()" data-dismiss="modal">
                                         <div class="card-body">
                                             <h5 class="card-title mytitle">GUID</h5>
                                             <h6 class="card-subtitle mb-2 text-muted subhead">Unique sequence of 36 Haxadecimal digits</h6>
@@ -209,7 +215,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="card mycard">
-                                        <div class="card-body" id="rownumber" onclick="rownumber()">
+                                        <div class="card-body" id="rownumber" onclick="rownumber()" data-dismiss="modal">
                                             <h5 class="card-title mytitle">Row Number</h5>
                                             <h6 class="card-subtitle mb-2 text-muted subhead">Number of the row in the table</h6>
                                             <p class="card-text">1<br>2<br>3</p>
@@ -217,7 +223,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <div class="card mycard" id="firstname" onclick="firstname()">
+                                    <div class="card mycard" id="firstname" onclick="firstname()" data-dismiss="modal">
                                         <div class="card-body">
                                             <h5 class="card-title mytitle">First Name</h5>
                                             <h6 class="card-subtitle mb-2 text-muted subhead">First name of the person</h6>
@@ -226,7 +232,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <div class="card mycard" id="lastrow" onclick="lastname()">
+                                    <div class="card mycard" id="lastrow" onclick="lastname()" data-dismiss="modal">
                                         <div class="card-body">
                                             <h5 class="card-title mytitle">Last Name</h5>
                                             <h6 class="card-subtitle mb-2 text-muted subhead">Last Name of the Person</h6>
@@ -238,7 +244,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-3">
-                                    <div class="card mycard" id="fullname" onclick="fullname()">
+                                    <div class="card mycard" id="fullname" onclick="fullname()" data-dismiss="modal">
                                         <div class="card-body">
                                             <h5 class="card-title mytitle">Full Name</h5>
                                             <h6 class="card-subtitle mb-2 text-muted subhead">Full name of the person</h6>
@@ -247,7 +253,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <div class="card mycard" id="male" onclick="firstnamemale()">
+                                    <div class="card mycard" id="male" onclick="firstnamemale()" data-dismiss="modal">
                                         <div class="card-body">
                                             <h5 class="card-title mytitle">First Name(Male)</h5>
                                             <h6 class="card-subtitle mb-2 text-muted subhead">First name of the man</h6>
@@ -256,7 +262,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <div class="card mycard" id="female" onclick="firstnamefemale()">
+                                    <div class="card mycard" id="female" onclick="firstnamefemale()" data-dismiss="modal">
                                         <div class="card-body">
                                             <h5 class="card-title mytitle">First Name(Female)</h5>
                                             <h6 class="card-subtitle mb-2 text-muted subhead">First name of the women</h6>
@@ -265,7 +271,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <div class="card mycard" id="email" onclick="email()">
+                                    <div class="card mycard" id="email" onclick="email()" data-dismiss="modal">
                                         <div class="card-body">
                                             <h5 class="card-title mytitle">Email</h5>
                                             <h6 class="card-subtitle mb-2 text-muted subhead">email of person</h6>
@@ -277,7 +283,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-3">
-                                    <div class="card mycard" id="username" onclick="username()">
+                                    <div class="card mycard" id="username" onclick="username()" data-dismiss="modal">
                                         <div class="card-body">
                                             <h5 class="card-title mytitle">Username</h5>
                                             <h6 class="card-subtitle mb-2 text-muted subhead">Unique sequence of 36 Haxadecimal digits</h6>
@@ -286,7 +292,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <div class="card mycard" id="company" onclick="companyname()">
+                                    <div class="card mycard" id="company" onclick="companyname()" data-dismiss="modal">
                                         <div class="card-body">
                                             <h5 class="card-title mytitle">Company Name</h5>
                                             <h6 class="card-subtitle mb-2 text-muted subhead">Number of the row in the table</h6>
@@ -295,7 +301,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <div class="card mycard" id="ipaddressv4" onclick="ipaddress4()">
+                                    <div class="card mycard" id="ipaddressv4" onclick="ipaddress4()" data-dismiss="modal">
                                         <div class="card-body">
                                             <h5 class="card-title mytitle">Ip Address(V4)</h5>
                                             <h6 class="card-subtitle mb-2 text-muted subhead">First name of the person</h6>
@@ -304,7 +310,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <div class="card mycard" id="ipaddressv6" onclick="ipaddress6()">
+                                    <div class="card mycard" id="ipaddressv6" onclick="ipaddress6()" data-dismiss="modal">
                                         <div class="card-body">
                                             <h5 class="card-title mytitle">Ip Address(V6)</h5>
                                             <h6 class="card-subtitle mb-2 text-muted subhead">Last Name of the Person</h6>
@@ -316,7 +322,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-3">
-                                    <div class="card mycard" id="language" onclick="language()">
+                                    <div class="card mycard" id="language" onclick="language()" data-dismiss="modal">
                                         <div class="card-body">
                                             <h5 class="card-title mytitle">Language</h5>
                                             <h6 class="card-subtitle mb-2 text-muted subhead">Unique sequence of 36 Haxadecimal digits</h6>
@@ -325,7 +331,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <div class="card mycard" id="jobtitle" onclick="jobtitle()">
+                                    <div class="card mycard" id="jobtitle" onclick="jobtitle()" data-dismiss="modal">
                                         <div class="card-body">
                                             <h5 class="card-title mytitle">Job Title</h5>
                                             <h6 class="card-subtitle mb-2 text-muted subhead">Number of the row in the table</h6>
@@ -334,7 +340,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <div class="card mycard" id="programming" onclick="programming()">
+                                    <div class="card mycard" id="programming" onclick="programming()" data-dismiss="modal">
                                         <div class="card-body">
                                             <h5 class="card-title mytitle">Programming Language</h5>
                                             <h6 class="card-subtitle mb-2 text-muted subhead">First name of the person</h6>
@@ -343,7 +349,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <div class="card mycard" id="currency" onclick="currency()">
+                                    <div class="card mycard" id="currency" onclick="currency()" data-dismiss="modal">
                                         <div class="card-body">
                                             <h5 class="card-title mytitle">Currency</h5>
                                             <h6 class="card-subtitle mb-2 text-muted subhead">Last Name of the Person</h6>
@@ -355,7 +361,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-3">
-                                    <div class="card mycard" id="symbol" onclick="symbol()">
+                                    <div class="card mycard" id="symbol" onclick="symbol()" data-dismiss="modal">
                                         <div class="card-body">
                                             <h5 class="card-title mytitle">Currency Symbol</h5>
                                             <h6 class="card-subtitle mb-2 text-muted subhead">Unique sequence of 36 Haxadecimal digits</h6>
@@ -364,7 +370,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <div class="card mycard" id="number" onclick="number()">
+                                    <div class="card mycard" id="number" onclick="number()" data-dismiss="modal">
                                         <div class="card-body">
                                             <h5 class="card-title mytitle">Number</h5>
                                             <h6 class="card-subtitle mb-2 text-muted subhead">Number of the row in the table</h6>
@@ -373,7 +379,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <div class="card mycard" id="Phone" onclick="phone()">
+                                    <div class="card mycard" id="Phone" onclick="phone()" data-dismiss="modal">
                                         <div class="card-body">
                                             <h5 class="card-title mytitle">Phone Number</h5>
                                             <h6 class="card-subtitle mb-2 text-muted subhead">First name of the person</h6>
@@ -382,7 +388,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <div class="card mycard" id="Domain" onclick="domainname()">
+                                    <div class="card mycard" id="Domain" onclick="domainname()" data-dismiss="modal">
                                         <div class="card-body">
                                             <h5 class="card-title mytitle">Domain Name</h5>
                                             <h6 class="card-subtitle mb-2 text-muted subhead">Last Name of the Person</h6>
@@ -429,8 +435,10 @@
             </div>
         </div>
     </div>
-
     </div>
+    <!-- form to diaply field type option -->
+
+    <!-- scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -438,7 +446,7 @@
     <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
     <script src="{% static 'js/project.js'%}"></script>
     <script src="{% static 'js/show.js'%}"></script>
-
+    <!-- scripts -->
 </body>
 
 </html>

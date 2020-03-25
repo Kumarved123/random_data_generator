@@ -88,7 +88,7 @@ def symbol ():
 def nametitle ():
     return random.choice(name_title)
 
-# function to title
+# function to programming language
 def planguage ():
     return random.choice(p_language)
 
@@ -100,11 +100,11 @@ def date_():
 def datetime():
     return str(fake.past_datetime())
 
-# function to datetime
+# function to number
 def number():
     return str(fake.random_int(0, 1000))
 
-# function to datetime
+# function to timezone
 def timezone():
     return fake.timezone()
 
@@ -112,10 +112,11 @@ def timezone():
 def boolean():
     return str(bool(random.getrandbits(1)))
 
+#get mac address
 def mac():
     return str(("02:00:00:%02x:%02x:%02x" % (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))) )
 
-# function to generate random username
+# function to generat money
 def money():
     return number()+' '+ symbol ()
 
@@ -148,12 +149,15 @@ def to_xml(df, filename=None, mode='w'):
 
 #function implementation
 import re
+#uppercase function
 def upper(string):
     return string.upper()
 
+#lowercase funtion
 def lower(string):
     return string.lower()
 
+#converting hex
 name = hex
 def hex(hex_str):
     hex_int = int(hex_str, 16)
@@ -165,7 +169,6 @@ def base64(string):
     return base.b64encode(bytes(string, 'utf-8'))
     
 uppercase = 'ved'
-
 def enforce_function(string, data, num):
     string = re.sub("then ", ":\n\t\tuppercase =", string)
     string = re.sub("elif ", "\n\telif ", string)

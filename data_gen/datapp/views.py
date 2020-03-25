@@ -54,12 +54,15 @@ def main(request):
                 for j in range(1,int(nrows[0])+1):
                     data = str(j)
                     string = formula[field_type.index(i)]
-                    if "if" in string:
-                        print('yes it is there')
-                        newValue = enforce_function(string, data, 3)
+                    if 'this' in string:
+                        if "if" in string:
+                            print('yes it is there')
+                            newValue = enforce_function(string, data, 3)
+                        else:
+                            newValue = enforce_function(string, data, 2)
+                        tempdata.append(newValue)
                     else:
-                        newValue = enforce_function(string, data, 2)
-                    tempdata.append(newValue)
+                        tempdata.append(data)
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -71,17 +74,17 @@ def main(request):
                 for j in range(int(nrows[0])):
                     data = fname()
                     string = formula[field_type.index(i)]
-                    if "if" in string and "else" in string:
-                        newValue = enforce_function(string, data, 3)
-                    else:
-                        datas = data
-                        newValue = ''
-                        for data in datas.split():
-                            newValue = newValue + ' ' +  enforce_function(string, data, 1)
-                    try:
+                    if 'this' in string:
+                        if "if" in string and "else" in string:
+                            newValue = enforce_function(string, data, 3)
+                        else:
+                            datas = data
+                            newValue = ''
+                            for data in datas.split():
+                                newValue = newValue + ' ' +  enforce_function(string, data, 1)
                         tempdata.append(newValue)
-                    except:
-                        tempdata.append(fname())
+                    else:
+                        tempdata.append(data)
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -92,18 +95,18 @@ def main(request):
                 tempdata = []
                 for j in range(int(nrows[0])):
                     data = lname()
-                    string = formula[field_type.index(i)]
-                    if "if" in string and "else" in string:
-                        newValue = enforce_function(string, data, 3)
-                    else:
-                        datas = data
-                        newValue = ''
-                        for data in datas.split():
-                            newValue = newValue + ' ' +  enforce_function(string, data, 1)
-                    try:
+                    sstring = formula[field_type.index(i)]
+                    if 'this' in string:
+                        if "if" in string and "else" in string:
+                            newValue = enforce_function(string, data, 3)
+                        else:
+                            datas = data
+                            newValue = ''
+                            for data in datas.split():
+                                newValue = newValue + ' ' +  enforce_function(string, data, 1)
                         tempdata.append(newValue)
-                    except:
-                        tempdata.append(lname())
+                    else:
+                        tempdata.append(data)
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -115,17 +118,17 @@ def main(request):
                 for j in range(int(nrows[0])):
                     data = fullname()
                     string = formula[field_type.index(i)]
-                    if "if" in string and "else" in string:
-                        newValue = enforce_function(string, data, 3)
-                    else:
-                        datas = data
-                        newValue = ''
-                        for data in datas.split():
-                            newValue = newValue + ' ' +  enforce_function(string, data, 1)
-                    try:
+                    if 'this' in string:
+                        if "if" in string and "else" in string:
+                            newValue = enforce_function(string, data, 3)
+                        else:
+                            datas = data
+                            newValue = ''
+                            for data in datas.split():
+                                newValue = newValue + ' ' +  enforce_function(string, data, 1)
                         tempdata.append(newValue)
-                    except:
-                        tempdata.append(fullname())
+                    else:
+                        tempdata.append(data)
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -137,17 +140,17 @@ def main(request):
                 for j in range(int(nrows[0])):
                     data = f_fname()
                     string = formula[field_type.index(i)]
-                    if "if" in string and "else" in string:
-                        newValue = enforce_function(string, data, 3)
-                    else:
-                        datas = data
-                        newValue = ''
-                        for data in datas.split():
-                            newValue = newValue + ' ' +  enforce_function(string, data, 1)
-                    try:
+                    if 'this' in string:
+                        if "if" in string and "else" in string:
+                            newValue = enforce_function(string, data, 3)
+                        else:
+                            datas = data
+                            newValue = ''
+                            for data in datas.split():
+                                newValue = newValue + ' ' +  enforce_function(string, data, 1)
                         tempdata.append(newValue)
-                    except:
-                        tempdata.append(f_fname())
+                    else:
+                        tempdata.append(data)
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -159,17 +162,17 @@ def main(request):
                 for j in range(int(nrows[0])):
                     data = m_fname()
                     string = formula[field_type.index(i)]
-                    if "if" in string and "else" in string:
-                        newValue = enforce_function(string, data, 3)
-                    else:
-                        datas = data
-                        newValue = ''
-                        for data in datas.split():
-                            newValue = newValue + ' ' +  enforce_function(string, data, 1)
-                    try:
+                    if 'this' in string:
+                        if "if" in string and "else" in string:
+                            newValue = enforce_function(string, data, 3)
+                        else:
+                            datas = data
+                            newValue = ''
+                            for data in datas.split():
+                                newValue = newValue + ' ' +  enforce_function(string, data, 1)
                         tempdata.append(newValue)
-                    except:
-                        tempdata.append(m_fname())
+                    else:
+                        tempdata.append(data)
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -181,17 +184,17 @@ def main(request):
                 for j in range(int(nrows[0])):
                     data = Email()
                     string = formula[field_type.index(i)]
-                    if "if" in string and "else" in string:
-                        newValue = enforce_function(string, data, 3)
-                    else:
-                        datas = data
-                        newValue = ''
-                        for data in datas.split():
-                            newValue = newValue + ' ' +  enforce_function(string, data, 1)
-                    try:
+                    if 'this' in string:
+                        if "if" in string and "else" in string:
+                            newValue = enforce_function(string, data, 3)
+                        else:
+                            datas = data
+                            newValue = ''
+                            for data in datas.split():
+                                newValue = newValue + ' ' +  enforce_function(string, data, 1)
                         tempdata.append(newValue)
-                    except:
-                        tempdata.append(Email())
+                    else:
+                        tempdata.append(data)
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -203,17 +206,17 @@ def main(request):
                 for j in range(int(nrows[0])):
                     data = username()
                     string = formula[field_type.index(i)]
-                    if "if" in string and "else" in string:
-                        newValue = enforce_function(string, data, 3)
-                    else:
-                        datas = data
-                        newValue = ''
-                        for data in datas.split():
-                            newValue = newValue + ' ' +  enforce_function(string, data, )
-                    try:
+                    if 'this' in string:
+                        if "if" in string and "else" in string:
+                            newValue = enforce_function(string, data, 3)
+                        else:
+                            datas = data
+                            newValue = ''
+                            for data in datas.split():
+                                newValue = newValue + ' ' +  enforce_function(string, data, 1)
                         tempdata.append(newValue)
-                    except:
-                        tempdata.append(username())
+                    else:
+                        tempdata.append(data)
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -225,17 +228,17 @@ def main(request):
                 for j in range(int(nrows[0])):
                     data = comapny()
                     string = formula[field_type.index(i)]
-                    if "if" in string and "else" in string:
-                        newValue = enforce_function(string, data, 3)
-                    else:
-                        datas = data
-                        newValue = ''
-                        for data in datas.split():
-                            newValue = newValue + ' ' +  enforce_function(string, data, 1)
-                    try:
+                    if 'this' in string:
+                        if "if" in string and "else" in string:
+                            newValue = enforce_function(string, data, 3)
+                        else:
+                            datas = data
+                            newValue = ''
+                            for data in datas.split():
+                                newValue = newValue + ' ' +  enforce_function(string, data, 1)
                         tempdata.append(newValue)
-                    except:
-                        tempdata.append(comapny())
+                    else:
+                        tempdata.append(data)
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -267,17 +270,17 @@ def main(request):
                 for j in range(int(nrows[0])):
                     data = job()
                     string = formula[field_type.index(i)]
-                    if "if" in string and "else" in string:
-                        newValue = enforce_function(string, data, 3)
-                    else:
-                        datas = data
-                        newValue = ''
-                        for data in datas.split():
-                            newValue = newValue + ' ' +  enforce_function(string, data, 1)
-                    try:
+                    if 'this' in string:
+                        if "if" in string and "else" in string:
+                            newValue = enforce_function(string, data, 3)
+                        else:
+                            datas = data
+                            newValue = ''
+                            for data in datas.split():
+                                newValue = newValue + ' ' +  enforce_function(string, data, 1)
                         tempdata.append(newValue)
-                    except:
-                        tempdata.append(job())
+                    else:
+                        tempdata.append(data)
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -287,7 +290,19 @@ def main(request):
             elif i == 'Language':
                 tempdata = []
                 for j in range(int(nrows[0])):
-                    tempdata.append(lang())
+                    data = lang()
+                    string = formula[field_type.index(i)]
+                    if 'this' in string:
+                        if "if" in string and "else" in string:
+                            newValue = enforce_function(string, data, 3)
+                        else:
+                            datas = data
+                            newValue = ''
+                            for data in datas.split():
+                                newValue = newValue + ' ' +  enforce_function(string, data, 1)
+                        tempdata.append(newValue)
+                    else:
+                        tempdata.append(data)
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -299,17 +314,17 @@ def main(request):
                 for j in range(int(nrows[0])):
                     data = planguage()
                     string = formula[field_type.index(i)]
-                    if "if" in string and "else" in string:
-                        newValue = enforce_function(string, data, 3)
-                    else:
-                        datas = data
-                        newValue = ''
-                        for data in datas.split():
-                            newValue = newValue + ' ' +  enforce_function(string, data, 1)
-                    try:
+                    if 'this' in string:
+                        if "if" in string and "else" in string:
+                            newValue = enforce_function(string, data, 3)
+                        else:
+                            datas = data
+                            newValue = ''
+                            for data in datas.split():
+                                newValue = newValue + ' ' +  enforce_function(string, data, 1)
                         tempdata.append(newValue)
-                    except:
-                        tempdata.append(planguage())
+                    else:
+                        tempdata.append(data)
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -321,17 +336,17 @@ def main(request):
                 for j in range(int(nrows[0])):
                     data = Currency()
                     string = formula[field_type.index(i)]
-                    if "if" in string and "else" in string:
-                        newValue = enforce_function(string, data, 3)
-                    else:
-                        datas = data
-                        newValue = ''
-                        for data in datas.split():
-                            newValue = newValue + ' ' +  enforce_function(string, data, 1)
-                    try:
+                    if 'this' in string:
+                        if "if" in string and "else" in string:
+                            newValue = enforce_function(string, data, 3)
+                        else:
+                            datas = data
+                            newValue = ''
+                            for data in datas.split():
+                                newValue = newValue + ' ' +  enforce_function(string, data, 1)
                         tempdata.append(newValue)
-                    except:
-                        tempdata.append(Currency())
+                    else:
+                        tempdata.append(data)
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -353,10 +368,15 @@ def main(request):
                 for j in range(int(nrows[0])):
                     data = number()
                     string = formula[field_type.index(i)]
-                    if "if" in string:
-                        newValue = enforce_function(string, data, 3)
+                    if 'this' in string:
+                        if "if" in string:
+                            print('yes it is there')
+                            newValue = enforce_function(string, data, 3)
+                        else:
+                            newValue = enforce_function(string, data, 2)
+                        tempdata.append(newValue)
                     else:
-                        newValue = enforce_function(string, data, 2)
+                        tempdata.append(data)
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -408,17 +428,17 @@ def main(request):
                 for j in range(int(nrows[0])):
                     data = timezone()
                     string = formula[field_type.index(i)]
-                    if "if" in string and "else" in string:
-                        newValue = enforce_function(string, data, 3)
-                    else:
-                        datas = data
-                        newValue = ''
-                        for data in datas.split():
-                            newValue = newValue + ' ' +  enforce_function(string, data, 1)
-                    try:
+                    if 'this' in string:
+                        if "if" in string and "else" in string:
+                            newValue = enforce_function(string, data, 3)
+                        else:
+                            datas = data
+                            newValue = ''
+                            for data in datas.split():
+                                newValue = newValue + ' ' +  enforce_function(string, data, 1)
                         tempdata.append(newValue)
-                    except:
-                        tempdata.append(timezone())
+                    else:
+                        tempdata.append(data)
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -430,17 +450,17 @@ def main(request):
                 for j in range(int(nrows[0])):
                     data = boolean()
                     string = formula[field_type.index(i)]
-                    if "if" in string and "else" in string:
-                        newValue = enforce_function(string, data, 3)
-                    else:
-                        datas = data
-                        newValue = ''
-                        for data in datas.split():
-                            newValue = newValue + ' ' +  enforce_function(string, data, 1)
-                    try:
+                    if 'this' in string:
+                        if "if" in string and "else" in string:
+                            newValue = enforce_function(string, data, 3)
+                        else:
+                            datas = data
+                            newValue = ''
+                            for data in datas.split():
+                                newValue = newValue + ' ' +  enforce_function(string, data, 1)
                         tempdata.append(newValue)
-                    except:
-                        tempdata.append(boolean())
+                    else:
+                        tempdata.append(data)
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -472,17 +492,17 @@ def main(request):
                 for j in range(int(nrows[0])):
                     data = nametitle()
                     string = formula[field_type.index(i)]
-                    if "if" in string and "else" in string:
-                        newValue = enforce_function(string, data, 1)
-                    else:
-                        newValue = ''
-                        for data in datas.split():
-                            newValue = newValue + ' ' +  enforce_function(string, data, 1)
-                    try:
-                        datas = data
+                    if 'this' in string:
+                        if "if" in string and "else" in string:
+                            newValue = enforce_function(string, data, 3)
+                        else:
+                            datas = data
+                            newValue = ''
+                            for data in datas.split():
+                                newValue = newValue + ' ' +  enforce_function(string, data, 1)
                         tempdata.append(newValue)
-                    except:
-                        tempdata.append(name_title())
+                    else:
+                        tempdata.append(data)
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -494,17 +514,17 @@ def main(request):
                 for j in range(int(nrows[0])):
                     data = gender()
                     string = formula[field_type.index(i)]
-                    if "if" in string and "else" in string:
-                        newValue = enforce_function(string, data, 1)
-                    else:
-                        datas = data
-                        newValue = ''
-                        for data in datas.split():
-                            newValue = newValue + ' ' +  enforce_function(string, data, 1)
-                    try:
+                    if 'this' in string:
+                        if "if" in string and "else" in string:
+                            newValue = enforce_function(string, data, 3)
+                        else:
+                            datas = data
+                            newValue = ''
+                            for data in datas.split():
+                                newValue = newValue + ' ' +  enforce_function(string, data, 1)
                         tempdata.append(newValue)
-                    except:
-                        tempdata.append(gender())
+                    else:
+                        tempdata.append(data)
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -516,9 +536,10 @@ def main(request):
                     tempdata.append('Not valid Field Type')
                 
             rows.append(tempdata)
-        try:
-            df = pd.DataFrame((list(zip(*rows))), columns=field_name, dtype=str)
-        except:
+        
+        df = pd.DataFrame((list(zip(*rows))), columns=field_name, dtype=str)
+        r, c = df.shape
+        if c == 0:
             context = {"nodata": 'block'}
             return render(request, "main.html", context)
         table_content = df.to_html()
@@ -535,7 +556,7 @@ def main(request):
                     df.to_csv(filename, index=False, line_terminator="\r\n")
             # JSON file exporter
             if fileExport[0] == 'JSON':
-                filename = "download/random_data.tsv"
+                filename = "download/random_data.json"
                 if ending[0] == 'Unix':
                     df.to_json(filename, orient='index',line_terminator="\n")
                 else:

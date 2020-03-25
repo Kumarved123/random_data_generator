@@ -1,25 +1,29 @@
+// floting table rows
 $(document).ready(function() {
     $('tbody').sortable();
 });
 
+// Close and display button on preview popup
 var btn = document.getElementById("closebutton");
 var cross = document.getElementById("crossbtn");
-var model = document.getElementById("myModal");
 
+// function for close button
 btn.onclick = function goBack() {
+        window.history.back()
+    }
+    // function for cross Button
+cross.onclick = function close() {
     window.history.back()
 }
-cross.onclick = function close() {
-    $("#myModal").modal('hide');
-}
 
+// message close button
 var nobtn = document.getElementById("noclosebutton");
-var nomodel = document.getElementById("nomyModal");
 
 nobtn.onclick = function nogoBack() {
     window.history.back()
 }
 
+// function to close the delelte the row
 function SomeDeleteRowFunction(o) {
     var table = o.parentNode.parentNode.parentNode.parentNode.parentNode;
     var rowCount = table.rows.length;
@@ -34,6 +38,8 @@ function SomeDeleteRowFunction(o) {
         }
     }
 }
+
+// 
 var newvalue;
 
 function changefun(o) {
