@@ -396,7 +396,7 @@ def main(request):
             elif i == 'Domain Name':
                 tempdata = []
                 for j in range(int(nrows[0])):
-                    tempdata.append(phnumber())
+                    tempdata.append(domain())
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
@@ -578,6 +578,6 @@ def main(request):
             # XML file exporter
             if fileExport[0] == 'XML':
                 pd.DataFrame.to_xml = to_xml
-                to_xml(df, "random_data.xml")
+                to_xml(df, "download/random_data.xml")
             context = {'table_content': table_content, "popup": 'none'}
             return render(request, "main.html", context)
