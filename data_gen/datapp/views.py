@@ -4,6 +4,9 @@ import pandas as pd
 from utils.utils import *
 import sys
 import time
+from django.http import JsonResponse
+from django.contrib import messages
+
 
 # Create your views here.
 def main(request):
@@ -18,10 +21,12 @@ def main(request):
         nrows = d['fname']
         fileExport = d['fileExport']
         ending = d['l_ending_style']
-        button_value = d['button']
         chkempty = d['Empty']
         valempty = d['valEmpty']
-        
+        try:
+            button_value = (d['button'])
+        except:
+            button_value= "download"
         rows = []
         chk_index = 0
         chk_arr = []
@@ -361,6 +366,15 @@ def main(request):
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
                     tempdata = df['result'].values.tolist()
+             # Currency symbol
+            elif i == 'Gender':
+                tempdata = []
+                for j in range(int(nrows[0])):
+                    tempdata.append(gender())
+                if chkempty[field_type.index(i)] == 'on':
+                    df = pd.DataFrame(tempdata)
+                    df = empty(df, valempty[field_type.index(i)])
+                    tempdata = df['result'].values.tolist()
             
              # random number generation
             elif i == 'Number':
@@ -539,45 +553,46 @@ def main(request):
         
         df = pd.DataFrame((list(zip(*rows))), columns=field_name, dtype=str)
         r, c = df.shape
-        if c == 0:
-            context = {"nodata": 'block'}
-            return render(request, "main.html", context)
         table_content = df.to_html()
+        
         if button_value[0] == 'Preview':
-            context = {'table_content': table_content, "popup": 'block'}
-            return render(request, "main.html", context)
-        if button_value[0] == 'download':
-            # csv file exporter
-            if fileExport[0] == 'CSV':
-                filename = "download/random_data.csv"
-                if ending[0] == 'Unix':
-                    df.to_csv(filename, index=False, line_terminator="\n")
-                else:
-                    df.to_csv(filename, index=False, line_terminator="\r\n")
-            # JSON file exporter
-            if fileExport[0] == 'JSON':
-                filename = "download/random_data.json"
-                if ending[0] == 'Unix':
-                    df.to_json(filename, orient='index',line_terminator="\n")
-                else:
-                    df.to_json(filename, orient='index',line_terminator="\r\n")
-            # TSV file exporter
-            if fileExport[0] == 'TSV':
-                filename = "download/random_data.tsv"
-                if ending[0] == 'Unix':
-                    df.to_csv(filename, sep='\t', index=False, line_terminator="\n") 
-                else:
-                    df.to_csv(filename, sep='\t', index=False, line_terminator="\r\n") 
+            if c == 0:
+                return render(request, "main.html")
+            else:
+                context = {'table_content': table_content}
+                return JsonResponse(context)
+        elif button_value[0] == 'download':
+            if c == 0:
+                return render(request, "main.html")
+            else:
+                # csv file exporter
+                if fileExport[0] == 'CSV':
+                    filename = "download/random_data.csv"
+                    if ending[0] == 'Unix':
+                        df.to_csv(filename, index=False, line_terminator="\n")
+                    else:
+                        df.to_csv(filename, index=False, line_terminator="\r\n")
+                # JSON file exporter
+                if fileExport[0] == 'JSON':
+                    filename = "download/random_data.json"
+                    df.to_json(filename, orient='index')
+                # TSV file exporter
+                if fileExport[0] == 'TSV':
+                    filename = "download/random_data.tsv"
+                    if ending[0] == 'Unix':
+                        df.to_csv(filename, sep='\t', index=False, line_terminator="\n") 
+                    else:
+                        df.to_csv(filename, sep='\t', index=False, line_terminator="\r\n") 
 
-            # TSV file exporter
-            if fileExport[0] == 'Excel':
-                filename = "download/random_data.tsv"
-                writer = ExcelWriter(filename)
-                df.to_excel(writer, 'Sheet5')
-                writer.save()
-            # XML file exporter
-            if fileExport[0] == 'XML':
-                pd.DataFrame.to_xml = to_xml
-                to_xml(df, "download/random_data.xml")
-            context = {'table_content': table_content, "popup": 'none'}
+                # TSV file exporter
+                if fileExport[0] == 'Excel':
+                    filename = "download/random_data.xlsx"
+                    writer = ExcelWriter(filename)
+                    df.to_excel(writer, 'Sheet5')
+                    writer.save()
+                # XML file exporter
+                if fileExport[0] == 'XML':
+                    pd.DataFrame.to_xml = to_xml
+                    to_xml(df, "download/random_data.xml")
+                context = {'table_content': table_content, "popup": 'none'}
             return render(request, "main.html", context)

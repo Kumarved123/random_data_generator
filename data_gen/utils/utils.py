@@ -134,7 +134,7 @@ def empty(df, percent):
     df2 = df
     df2.rename(columns={list(df2)[0]:'A'}, inplace=True)
     df1.rename(columns={list(df1)[0]:'B'}, inplace=True)
-    df3 = df2.join(df1)
+    df3 = df2.join(df1, lsuffix='_left', rsuffix='_right')
     df3['result'] = df3['B'].fillna(df3['A'])
     return (df3[['result']])
 
@@ -146,7 +146,7 @@ def to_xml(df, filename=None, mode='w'):
             xml.append('  <field name="{0}">{1}</field>'.format(col_name, row.iloc[i]))
         xml.append('</item>')
         return '\n'.join(xml)
-    res = '\n'.join(df.apply(row_to_xml, axis=1))
+    res = '\n'.join(df.apply(row_to_xml, axis=1 ))
 
     if filename is None:
         return str(res)

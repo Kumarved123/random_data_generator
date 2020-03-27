@@ -1,29 +1,19 @@
-// floting table rows
+// floating table rows
 $(document).ready(function() {
     $('tbody').sortable();
+    $('#previewbtn').click(function() {
+        var form = $('#myForm')
+        $.post('', $(form).serialize() + '&button=' + "Preview", function(data) {
+            $('.message').html(data.table_content);
+        });
+        $('#myForm').submit.preventDefault();
+    })
+
+
 });
 
-// Close and display button on preview popup
-var btn = document.getElementById("closebutton");
-var cross = document.getElementById("crossbtn");
 
-// function for close button
-btn.onclick = function goBack() {
-        window.history.back()
-    }
-    // function for cross Button
-cross.onclick = function close() {
-    window.history.back()
-}
-
-// message close button
-var nobtn = document.getElementById("noclosebutton");
-
-nobtn.onclick = function nogoBack() {
-    window.history.back()
-}
-
-// function to close the delelte the row
+// function to close the delete the row
 function SomeDeleteRowFunction(o) {
     var table = o.parentNode.parentNode.parentNode.parentNode.parentNode;
     var rowCount = table.rows.length;
@@ -52,16 +42,8 @@ function formulas() {
     var inputVal = document.getElementById("exampleFormControlTextarea1");
     newvalue.value = inputVal.value;
     inputVal.value = '';
-}
+};
 
 if (document.getElementsByClassName("testName").checked) {
     document.getElementsByClassName('testNameHidden').value = 'on';
-}
-
-function validateForm() {
-    var x = document.forms["myForm"]["fname"].value;
-    if (x == "" || x == null) {
-        alert("Name must be filled out");
-        return false;
-    }
-}
+};

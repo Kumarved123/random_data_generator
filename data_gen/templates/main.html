@@ -25,8 +25,9 @@
     </div>
     <!-- Head -->
 
+
     <!--form   -->
-    <form id="myForm" action=" " onsubmit="return validateForm()" method="post">
+    <form id="myForm" action=" " method="post">
         {% csrf_token %}
         <!-- Field Table -->
         <div class="container upperbox" style="width:1200px; border-radius:5px; padding: 10px;">
@@ -79,10 +80,9 @@
                             </select>
                         </td>
                         <td>
-                            <button type="text" value="Preview" id="previewbutton" class="btn btn-primary" name="button" alt="#TB_inline?width=400&height=250&inlineId=mailpreview&modal=true" style="color: white;">preview</button>
-                            <button type="submit" value="download" id="downloadbutton" class="btn btn-primary" name="button" alt="#TB_inline?width=400&height=250&inlineId=mailpreview&modal=true">Download</button>
+                            <button type="button" id="previewbtn" value="Preview" data-toggle="modal" data-target="#myModal" class="btn btn-primary" name="button">Preview</button>
+                            <button type="submit" value="download" class="btn btn-primary" name="button">Download</button>
                         </td>
-                    </tr>
                 </thead>
             </table>
         </div>
@@ -92,44 +92,36 @@
     </form>
     <!--form   -->
 
+
     <!-- modal to display preview -->
-    <div id="myModal" class="modal" style="display:{{popup}};">
+    <div class="modal fade" id="myModal">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
+
+                <!-- Modal Header -->
                 <div class="modal-header">
-                    <h4 class="modal-title">Random data preview</h4>
-                    <button type="button" class="btn btn-outline-dark" id="crossbtn" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Heading</h4><br>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-                <div style="height: 450px; overflow: scroll; ">
-                    <div class="table" style="width: 50%;margin:10px; text-align: center; ">
-                        {% autoescape off %}{{ table_content }}{% endautoescape %}
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="message" style="max-height: 450px; overflow: scroll;">
+
                     </div>
                 </div>
+
+                <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="button" id="closebutton" class="btn btn-danger" data-dismiss="modal">close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
+
             </div>
         </div>
     </div>
     <!-- modal to display preview -->
 
-    <!-- modal to display error when form is empty -->
-    <div id="nomyModal" class="modal" style="display:{{nodata}};">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Message</h5>
-                </div>
-                <h6 style="text-align: center; padding: 5px;">No field in this table !!!</h6>
-                <div class="modal-footer">
-                    <button type="button" id="noclosebutton" class="btn btn-danger" data-dismiss="modal">OK</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- modal to display error when form is empty -->
-
-    <!-- ddynamic part of the form  -->
+    <!-- dynamic part of the form  -->
     <script id="tableRow" type="text/html">
         <tr>
             <td><i class="fa fa-navicon"></i></td>
