@@ -4,7 +4,7 @@ $(document).ready(function() {
     $('#previewbtn').click(function() {
         var form = $('#myForm')
         $.post('', $(form).serialize() + '&button=' + "Preview", function(data) {
-            $('.message').html(data.table_content);
+            $('.table').html(data.table_content);
         });
         $('#myForm').submit.preventDefault();
     })
