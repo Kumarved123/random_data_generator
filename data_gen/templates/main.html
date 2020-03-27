@@ -37,7 +37,7 @@
                         <tr>
                             <th></th>
                             <th>Feild Nmae</th>
-                            <th style="min-width: 200px;">Feild Type</th>
+                            <th style="min-width: 200px;">Field Type</th>
                             <th style="min-width: 200px;">Can be empty ?</th>
                             <th style="min-width: 200px;">Options</th>
                             <th style="min-width: 200px;">Actions</th>
@@ -100,7 +100,7 @@
 
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h4 class="modal-title">Modal Heading</h4><br>
+                    <h4 class="modal-title">Data Preview</h4><br>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
@@ -177,9 +177,9 @@
             ko.applyBindings(new tableRowsViewModel());
         });
     </script>
-    <!-- ddynamic part of the form  -->
+    <!-- dynamic part of the form  -->
 
-    <!-- form to diaply field type option -->
+    <!-- form to display field type option -->
     <div class="container">
         <!-- The Modal -->
         <div class="modal fade" id="selectmodel">
@@ -200,7 +200,7 @@
                                     <div class="card mycard" id="guid" onclick="guid()" data-dismiss="modal">
                                         <div class="card-body">
                                             <h5 class="card-title mytitle">GUID</h5>
-                                            <h6 class="card-subtitle mb-2 text-muted subhead">Unique sequence of 36 Haxadecimal digits</h6>
+                                            <h6 class="card-subtitle mb-2 text-muted subhead">Unique sequence of 36 Hexadecimal digits</h6>
                                             <p class="card-text">00773ece-6bea-11ea-9031-204747c5a17a</p>
                                         </div>
                                     </div>
@@ -209,7 +209,7 @@
                                     <div class="card mycard">
                                         <div class="card-body" id="rownumber" onclick="rownumber()" data-dismiss="modal">
                                             <h5 class="card-title mytitle">Row Number</h5>
-                                            <h6 class="card-subtitle mb-2 text-muted subhead">Number of the row in the table</h6>
+                                            <h6 class="card-subtitle mb-2 text-muted subhead">Number of the rows in the table</h6>
                                             <p class="card-text">1<br>2<br>3</p>
                                         </div>
                                     </div>
@@ -373,7 +373,7 @@
                                     <div class="card mycard" id="Phone" onclick="phone()" data-dismiss="modal">
                                         <div class="card-body">
                                             <h5 class="card-title mytitle">Phone Number</h5>
-                                            <h6 class="card-subtitle mb-2 text-muted subhead">Phone bumber with cuntry code</h6>
+                                            <h6 class="card-subtitle mb-2 text-muted subhead">Phone number with country code</h6>
                                             <p class="card-text">(473)311-8222x3259<br> 331-304-7839<br> (149)512-6439x464</p>
                                         </div>
                                     </div>
