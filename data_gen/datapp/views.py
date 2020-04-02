@@ -1,11 +1,17 @@
 from django.shortcuts import render
+from django.template import Context, loader
 from pandas import ExcelWriter
+from io import BytesIO
 import pandas as pd
 from utils.utils import *
+import xlsxwriter
+import os
 import sys
 import time
 from django.http import JsonResponse
 from django.contrib import messages
+from django.core.files import File
+from django.http import HttpResponse
 
 
 # Create your views here.
@@ -22,11 +28,10 @@ def main(request):
         fileExport = d['fileExport']
         ending = d['l_ending_style']
         chkempty = d['Empty']
+        button_value = d["button"]
         valempty = d['valEmpty']
-        try:
-            button_value = (d['button'])
-        except:
-            button_value= "download"
+        
+        
         rows = []
         chk_index = 0
         chk_arr = []
@@ -39,6 +44,22 @@ def main(request):
                 chk_arr.append('off')
                 chk_index+=1
         chkempty = chk_arr
+        valindex = 0
+        chk_index = 0
+        val_arr = []
+        while valindex < len(valempty)and chk_index < len(chkempty):
+            if chkempty[chk_index] == "on":
+                val_arr.append(valempty[valindex])
+                valindex+=2
+            else:
+                val_arr.append("0")
+                valindex+=1
+            chk_index+=1
+        
+        valempty = val_arr
+
+
+
         # generating the data using functions above
         field_type.pop()
         field_name.pop()
@@ -52,6 +73,7 @@ def main(request):
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
                     tempdata = df['result'].values.tolist()
+
 
             # Row Number Generation
             elif i == 'Row Number':
@@ -72,6 +94,7 @@ def main(request):
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
                     tempdata = df['result'].values.tolist()
+
 
             # First Name Generation
             elif i == 'First Name':
@@ -95,12 +118,13 @@ def main(request):
                     df = empty(df, valempty[field_type.index(i)])
                     tempdata = df['result'].values.tolist()
 
+
             # last Name Generation
             elif i == 'Last Name':
                 tempdata = []
                 for j in range(int(nrows[0])):
                     data = lname()
-                    sstring = formula[field_type.index(i)]
+                    string = formula[field_type.index(i)]
                     if 'this' in string:
                         if "if" in string and "else" in string:
                             newValue = enforce_function(string, data, 3)
@@ -116,6 +140,7 @@ def main(request):
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
                     tempdata = df['result'].values.tolist()
+
 
             # full Name Generation
             elif i == 'Full Name':
@@ -139,6 +164,7 @@ def main(request):
                     df = empty(df, valempty[field_type.index(i)])
                     tempdata = df['result'].values.tolist()
 
+
             # First Name male Generation
             elif i == 'First Name(male)':
                 tempdata = []
@@ -160,6 +186,7 @@ def main(request):
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
                     tempdata = df['result'].values.tolist()
+
 
             # First Name female Generation
             elif i == 'First Name(female)':
@@ -183,6 +210,7 @@ def main(request):
                     df = empty(df, valempty[field_type.index(i)])
                     tempdata = df['result'].values.tolist()
 
+
             # Email Generation
             elif i == 'Email':
                 tempdata = []
@@ -204,6 +232,7 @@ def main(request):
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
                     tempdata = df['result'].values.tolist()
+
 
             # username Generation
             elif i == 'Username':
@@ -227,6 +256,7 @@ def main(request):
                     df = empty(df, valempty[field_type.index(i)])
                     tempdata = df['result'].values.tolist()
 
+
             # Comapany Name Generation
             elif i == 'Comapny Name':
                 tempdata = []
@@ -249,6 +279,7 @@ def main(request):
                     df = empty(df, valempty[field_type.index(i)])
                     tempdata = df['result'].values.tolist()
 
+
             # IP address v4 Generation
             elif i == 'Ip address v4':
                 tempdata = []
@@ -259,6 +290,7 @@ def main(request):
                     df = empty(df, valempty[field_type.index(i)])
                     tempdata = df['result'].values.tolist()
 
+
              # IP address v6 Generation
             elif i == 'Ip address v6':
                 tempdata = []
@@ -268,6 +300,7 @@ def main(request):
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
                     tempdata = df['result'].values.tolist()
+
 
             # job title Generation
             elif i == 'Job Title':
@@ -291,6 +324,7 @@ def main(request):
                     df = empty(df, valempty[field_type.index(i)])
                     tempdata = df['result'].values.tolist()
 
+
             # Language Generation
             elif i == 'Language':
                 tempdata = []
@@ -312,6 +346,7 @@ def main(request):
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
                     tempdata = df['result'].values.tolist()
+
 
             # programming Language Generation
             elif i == 'Programming Language':
@@ -335,6 +370,7 @@ def main(request):
                     df = empty(df, valempty[field_type.index(i)])
                     tempdata = df['result'].values.tolist()
 
+
              # Currency
             elif i == 'Currency':
                 tempdata = []
@@ -356,6 +392,7 @@ def main(request):
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
                     tempdata = df['result'].values.tolist()
+
             
              # Currency symbol
             elif i == 'Currency Symbol':
@@ -366,6 +403,8 @@ def main(request):
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
                     tempdata = df['result'].values.tolist()
+
+
              # Currency symbol
             elif i == 'Gender':
                 tempdata = []
@@ -375,6 +414,7 @@ def main(request):
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
                     tempdata = df['result'].values.tolist()
+
             
              # random number generation
             elif i == 'Number':
@@ -395,6 +435,7 @@ def main(request):
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
                     tempdata = df['result'].values.tolist()
+
                 
             # phone number generation
             elif i == 'Phone Number':
@@ -405,6 +446,7 @@ def main(request):
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
                     tempdata = df['result'].values.tolist()
+
             
             # domain name generation
             elif i == 'Domain Name':
@@ -416,6 +458,7 @@ def main(request):
                     df = empty(df, valempty[field_type.index(i)])
                     tempdata = df['result'].values.tolist()
 
+
             # date
             elif i == 'Date':
                 tempdata = []
@@ -426,6 +469,7 @@ def main(request):
                     df = empty(df, valempty[field_type.index(i)])
                     tempdata = df['result'].values.tolist()
 
+
             # date with time
             elif i == 'Date with time':
                 tempdata = []
@@ -435,6 +479,7 @@ def main(request):
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
                     tempdata = df['result'].values.tolist()
+
             
             # time zone generation
             elif i == 'Time Zone':
@@ -479,6 +524,7 @@ def main(request):
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
                     tempdata = df['result'].values.tolist()
+
             
             # money generation
             elif i == 'Money':
@@ -490,6 +536,7 @@ def main(request):
                     df = empty(df, valempty[field_type.index(i)])
                     tempdata = df['result'].values.tolist()
 
+
             # mac address generation
             elif i == 'MAC Address':
                 tempdata = []
@@ -499,6 +546,7 @@ def main(request):
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
                     tempdata = df['result'].values.tolist()
+
             
             # name title generation
             elif i == 'Title':
@@ -521,6 +569,8 @@ def main(request):
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
                     tempdata = df['result'].values.tolist()
+
+
                     
             # gender
             elif i == 'Gender':
@@ -543,6 +593,8 @@ def main(request):
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
                     tempdata = df['result'].values.tolist()
+
+
             # if no match to input
             else:
                 tempdata = []
@@ -553,46 +605,81 @@ def main(request):
         
         df = pd.DataFrame((list(zip(*rows))), columns=field_name, dtype=str)
         r, c = df.shape
-        table_content = df.to_html(index=False, justify='center')
-        
+        table_content = df.to_html(index=False, justify='left',  classes="table")
         if button_value[0] == 'Preview':
             if c == 0:
                 return render(request, "main.html")
             else:
                 context = {'table_content': table_content}
                 return JsonResponse(context)
-        elif button_value[0] == 'download':
+        elif button_value[0] == '':
             if c == 0:
                 return render(request, "main.html")
             else:
                 # csv file exporter
+                
                 if fileExport[0] == 'CSV':
+                    
                     filename = "download/random_data.csv"
                     if ending[0] == 'Unix':
                         df.to_csv(filename, index=False, line_terminator="\n")
                     else:
                         df.to_csv(filename, index=False, line_terminator="\r\n")
+                    path_to_file = os.path.realpath("download/random_data.csv")
+                    f = open(path_to_file, 'r')
+                    myfile = File(f)
+                    response = HttpResponse(myfile, content_type='text/csv')
+                    response['Content-Disposition'] = 'attachment; filename=' + 'random_data.csv'
+                    print(response, "cs")
+                    return response
+
+
                 # JSON file exporter
                 if fileExport[0] == 'JSON':
                     filename = "download/random_data.json"
                     df.to_json(filename, orient='index')
+                    path_to_file = os.path.realpath("download/random_data.json")
+                    f = open(path_to_file, 'r')
+                    myfile = File(f)
+                    response = HttpResponse(myfile, content_type='application/json')
+                    response['Content-Disposition'] = 'attachment; filename="result.json"'
+                    return response
+
+
                 # TSV file exporter
                 if fileExport[0] == 'TSV':
                     filename = "download/random_data.tsv"
                     if ending[0] == 'Unix':
                         df.to_csv(filename, sep='\t', index=False, line_terminator="\n") 
                     else:
-                        df.to_csv(filename, sep='\t', index=False, line_terminator="\r\n") 
+                        df.to_csv(filename, sep='\t', index=False, line_terminator="\r\n")
+                    path_to_file = os.path.realpath(filename)
+                    f = open(path_to_file, 'r')
+                    myfile = File(f)
+                    response = HttpResponse(myfile, content_type='text/tsv')
+                    response['Content-Disposition'] = 'attachment; filename=' + 'random_data.tsv'
+                    return response 
+
+
 
                 # TSV file exporter
                 if fileExport[0] == 'Excel':
-                    filename = "download/random_data.xlsx"
-                    writer = ExcelWriter(filename)
-                    df.to_excel(writer, 'Sheet5')
-                    writer.save()
+                    with BytesIO() as b:
+                        # Use the StringIO object as the filehandle.
+                        writer = pd.ExcelWriter(b, engine='xlsxwriter')
+                        df.to_excel(writer, sheet_name='Sheet1', index= False)
+                        writer.save()
+                        return HttpResponse(b.getvalue(), content_type='application/ms-excel')
+
+                                
                 # XML file exporter
                 if fileExport[0] == 'XML':
+                    filename = "download/random_data.xml"
                     pd.DataFrame.to_xml = to_xml
-                    to_xml(df, "download/random_data.xml")
-                context = {'table_content': table_content, "popup": 'none'}
-            return render(request, "main.html", context)
+                    to_xml(df, filename)
+                    path_to_file = os.path.realpath(filename)
+                    f = open(path_to_file, 'r')
+                    myfile = File(f)
+                    response = HttpResponse(myfile, content_type="text/xml")
+                    response['Content-Disposition'] = 'attachment; filename=' + 'random_data.xml'
+                    return response 

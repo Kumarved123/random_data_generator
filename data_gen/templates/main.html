@@ -32,7 +32,7 @@
         <!-- Field Table -->
         <div class="container upperbox" style="width:1200px; border-radius:5px; padding: 10px;">
             <div class="col-12">
-                <table class="myTable" id="dataTable">
+                <table class="myTable table-responsive" id="dataTable">
                     <thead>
                         <tr>
                             <th></th>
@@ -54,12 +54,12 @@
         <!-- Lower Table -->
         <div class="container upperbox" style="width:1200px; border-radius:5px; padding: 10px;">
             <h5>Generation Options</h5>
-            <table class="table">
+            <table class="table-responsive">
                 <thead>
                     <tr>
                         <td>
                             <label for="fname">Number of rows:</label>
-                            <input type="number" id="fname" name="fname" size="4" placeholder="Number of rows" style="width: 80px;" value="0"><br>
+                            <input type="number" id="fname" name="fname" size="4" placeholder="Number of rows" style="width: 80px;" value="10"><br>
                         </td>
                         <td>
                             <label for="format">Export Format:</label>
@@ -80,8 +80,8 @@
                             </select>
                         </td>
                         <td>
-                            <button type="button" id="previewbtn" value="Preview" data-toggle="modal" data-target="#myModal" class="btn btn-primary" name="button">Preview</button>
-                            <button type="submit" value="download" class="btn btn-primary" name="button">Download</button>
+                            <button type="button" id="previewbtn" data-toggle="modal" data-target="#myModal" class="btn btn-primary" name="button">Preview</button>
+                            <button type="submit" id="downloadbtn" class="btn btn-primary" name="button">Download</button>
                         </td>
                 </thead>
             </table>
@@ -108,7 +108,6 @@
                 <div class="modal-body">
                     <table class="table-sm-responsive message">
 
-
                     </table>
                 </div>
 
@@ -132,15 +131,15 @@
             <td>
                 <input type="text" data-toggle="modal" name="fieldType" data-target="#selectmodel" value="---" onclick='selector(this)'>
             </td>
-            <td><input class='testName' type='checkbox' value='Yes' name='Empty'>
+            <td><input class='testName' type='checkbox' value='Yes' name='Empty' onclick="hero(this)">
                 <input class='testNameHidden' type='hidden' value='No' name='Empty'>
             </td>
             <td>
-                <p style="font-size: xx-small;">can be empty<input type="text" name="valEmpty" size="2" style="font-size: 12px;">% of the time
+                <p style="font-size: xx-small;">can be empty<input class="test" type="text" name="valEmpty" size="2" style="font-size: 12px;" disabled="true" value="0"><input class="testHidden" name="valEmpty" type="hidden" value="0" />% of the time
                 </p>
             </td>
 
-            <td><span><i class="fa fa-code" style="margin-right:20px;" data-toggle="modal" data-target="#functionmodel" onclick="changefun(this)"><input type="hidden" id="formulas" name="formulas" value="3487"></i><i class="fa fa-trash"  style="color: red;" onclick="SomeDeleteRowFunction(this)" ></i></span></td>
+            <td><span><i class="fa fa-code" style="margin-right:20px;" data-toggle="modal" data-target="#functionmodel" onclick="changefun(this)"><input type="hidden" id="formulas" name="formulas" value="0"></i><i class="fa fa-trash"  style="color: red;" onclick="SomeDeleteRowFunction(this)" ></i></span></td>
 
         </tr>
     </script>
@@ -436,7 +435,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
-    <script src="{% static 'js/project.js'%}"></script>
+    <script src="{% static 'js/data.js'%}"></script>
     <script src="{% static 'js/show.js'%}"></script>
     <!-- scripts -->
 </body>

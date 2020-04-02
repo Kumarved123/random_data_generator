@@ -15,6 +15,7 @@ from faker import Faker
 import uuid 
 import random
 import pandas as pd
+import numpy as np
 import sys
 
 fake = Faker()
@@ -136,6 +137,7 @@ def empty(df, percent):
     df1.rename(columns={list(df1)[0]:'B'}, inplace=True)
     df3 = df2.join(df1, lsuffix='_left', rsuffix='_right')
     df3['result'] = df3['B'].fillna(df3['A'])
+    df3 = df3.replace('NaN', np.nan).fillna('')
     return (df3[['result']])
 
 #function to write xml file
