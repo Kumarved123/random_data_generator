@@ -630,12 +630,11 @@ def main(request):
                     myfile = File(f)
                     response = HttpResponse(myfile, content_type='text/csv')
                     response['Content-Disposition'] = 'attachment; filename=' + 'random_data.csv'
-                    print(response, "cs")
                     return response
 
 
                 # JSON file exporter
-                if fileExport[0] == 'JSON':
+                elif fileExport[0] == 'JSON':
                     filename = "download/random_data.json"
                     df.to_json(filename, orient='index')
                     path_to_file = os.path.realpath("download/random_data.json")
@@ -647,7 +646,7 @@ def main(request):
 
 
                 # TSV file exporter
-                if fileExport[0] == 'TSV':
+                elif fileExport[0] == 'TSV':
                     filename = "download/random_data.tsv"
                     if ending[0] == 'Unix':
                         df.to_csv(filename, sep='\t', index=False, line_terminator="\n") 
@@ -663,7 +662,7 @@ def main(request):
 
 
                 # TSV file exporter
-                if fileExport[0] == 'Excel':
+                elif fileExport[0] == 'Excel':
                     with BytesIO() as b:
                         # Use the StringIO object as the filehandle.
                         writer = pd.ExcelWriter(b, engine='xlsxwriter')
@@ -673,7 +672,7 @@ def main(request):
 
                                 
                 # XML file exporter
-                if fileExport[0] == 'XML':
+                elif fileExport[0] == 'XML':
                     filename = "download/random_data.xml"
                     pd.DataFrame.to_xml = to_xml
                     to_xml(df, filename)
@@ -683,3 +682,7 @@ def main(request):
                     response = HttpResponse(myfile, content_type="text/xml")
                     response['Content-Disposition'] = 'attachment; filename=' + 'random_data.xml'
                     return response 
+
+                else:
+                    return render(request, 'main.html')
+                
