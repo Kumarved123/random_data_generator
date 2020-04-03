@@ -72,6 +72,8 @@ function formulas() {
     inputVal.value = '';
     if (newvalue.value != "") {
         newvalue.parentNode.style.color = "blue"
+    } else {
+        newvalue.parentNode.style.color = "black"
     }
 };
 

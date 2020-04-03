@@ -605,7 +605,7 @@ def main(request):
         
         df = pd.DataFrame((list(zip(*rows))), columns=field_name, dtype=str)
         r, c = df.shape
-        table_content = df.to_html(index=False, justify='left',  classes="table")
+        table_content = df.to_html(index=False, justify='center',  classes="table")
         if button_value[0] == 'Preview':
             if c == 0:
                 return render(request, "main.html")
