@@ -8,10 +8,14 @@ import xlsxwriter
 import os
 import sys
 import time
+import csv
+import sqlite3
 from django.http import JsonResponse
 from django.contrib import messages
 from django.core.files import File
 from django.http import HttpResponse
+from sqlalchemy import create_engine
+engine = create_engine('sqlite://', echo=False)
 
 
 # Create your views here.
@@ -622,11 +626,12 @@ def main(request):
                     
                     filename = "download/random_data.csv"
                     if ending[0] == 'Unix':
-                        df.to_csv(filename, index=False, line_terminator="\n")
+                        print("uix")
+                        df.to_csv(filename, index=False,encoding="ascii", line_terminator = "\n")
                     else:
-                        df.to_csv(filename, index=False, line_terminator="\r\n")
+                        df.to_csv(filename, index=False,encoding="ascii", line_terminator = "\r\n")
                     path_to_file = os.path.realpath("download/random_data.csv")
-                    f = open(path_to_file, 'r')
+                    f = open(path_to_file, 'rb')
                     myfile = File(f)
                     response = HttpResponse(myfile, content_type='text/csv')
                     response['Content-Disposition'] = 'attachment; filename=' + 'random_data.csv'
@@ -636,7 +641,7 @@ def main(request):
                 # JSON file exporter
                 elif fileExport[0] == 'JSON':
                     filename = "download/random_data.json"
-                    df.to_json(filename, orient='index')
+                    df.to_json(filename, orient='records', lines=True)
                     path_to_file = os.path.realpath("download/random_data.json")
                     f = open(path_to_file, 'r')
                     myfile = File(f)
@@ -683,6 +688,17 @@ def main(request):
                     response['Content-Disposition'] = 'attachment; filename=' + 'random_data.xml'
                     return response 
 
-                else:
-                    return render(request, 'main.html')
+                if fileExport[0] == 'SQL':
+                    filename = "download/random_data.csv"
+                    df.to_csv(filename, index=True,encoding="ascii", header = False, line_terminator = "\n")
+                    path_to_file = os.path.realpath("download/random_data.csv")
+                    f = open(path_to_file, 'r')
+                    with open("download/random_data.sql", 'w') as file:
+                        file.write("".join(f))
+                    path_to_file = os.path.realpath("download/random_data.sql")
+                    f = open(path_to_file, 'r')
+                    myfile = File(f)
+                    response = HttpResponse(myfile, content_type="text/sql")
+                    response['Content-Disposition'] = 'attachment; filename=' + 'random_data.sql'
+                    return response 
                 

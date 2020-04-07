@@ -63,6 +63,8 @@ var newvalue;
 
 function changefun(o) {
     newvalue = o.childNodes[0];
+    var inputVal = document.getElementById("exampleFormControlTextarea1");
+    inputVal.value = newvalue.value
 }
 
 function formulas() {

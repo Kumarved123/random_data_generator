@@ -143,17 +143,17 @@ def empty(df, percent):
 #function to write xml file
 def to_xml(df, filename=None, mode='w'):
     def row_to_xml(row):
-        xml = ['<item>']
+        xml = [' <record>']
         for i, col_name in enumerate(row.index):
-            xml.append('  <field name="{0}">{1}</field>'.format(col_name, row.iloc[i]))
-        xml.append('</item>')
-        return '\n'.join(xml)
-    res = '\n'.join(df.apply(row_to_xml, axis=1 ))
+            xml.append('   <{0}>{1}</{0}>'.format(col_name, row.iloc[i]))
+        xml.append(' </record>')
+        return '\n '.join(xml)
+    res = '\n '.join(df.apply(row_to_xml, axis=1 ))
 
     if filename is None:
         return str(res)
     with open(filename, mode) as f:
-        f.write(str(res))
+        f.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"+"<dataset>" + "\n "+ str(res) + "\n" + "</dataset>")
 
 #function implementation
 import re
