@@ -15,7 +15,6 @@ from django.contrib import messages
 from django.core.files import File
 from django.http import HttpResponse
 from sqlalchemy import create_engine
-engine = create_engine('sqlite://', echo=False)
 
 
 # Create your views here.
@@ -413,12 +412,23 @@ def main(request):
             elif i == 'Gender':
                 tempdata = []
                 for j in range(int(nrows[0])):
-                    tempdata.append(gender())
+                    data = gender()
+                    string = formula[field_type.index(i)]
+                    if 'this' in string:
+                        if "if" in string and "else" in string:
+                            newValue = enforce_function(string, data, 3)
+                        else:
+                            datas = data
+                            newValue = ''
+                            for data in datas.split():
+                                newValue = newValue + ' ' +  enforce_function(string, data, 1)
+                        tempdata.append(newValue)
+                    else:
+                        tempdata.append(data)
                 if chkempty[field_type.index(i)] == 'on':
                     df = pd.DataFrame(tempdata)
                     df = empty(df, valempty[field_type.index(i)])
                     tempdata = df['result'].values.tolist()
-
             
              # random number generation
             elif i == 'Number':
@@ -668,12 +678,16 @@ def main(request):
 
                 # TSV file exporter
                 elif fileExport[0] == 'Excel':
-                    with BytesIO() as b:
-                        # Use the StringIO object as the filehandle.
-                        writer = pd.ExcelWriter(b, engine='xlsxwriter')
-                        df.to_excel(writer, sheet_name='Sheet1', index= False)
-                        writer.save()
-                        return HttpResponse(b.getvalue(), content_type='application/ms-excel')
+                    from io import BytesIO as IO
+                    excel_file = IO()
+                    xlwriter = pd.ExcelWriter(excel_file, engine='xlsxwriter')
+                    df.to_excel(xlwriter, 'sheetname')
+                    xlwriter.save()
+                    xlwriter.close()
+                    excel_file.seek(0)
+                    response = HttpResponse(excel_file.read(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+                    response['Content-Disposition'] = 'attachment; filename=download/random_data.xlsx'
+                    return response
 
                                 
                 # XML file exporter
@@ -689,9 +703,13 @@ def main(request):
                     return response 
 
                 if fileExport[0] == 'SQL':
-                    filename = "download/random_data.csv"
-                    df.to_csv(filename, index=True,encoding="ascii", header = False, line_terminator = "\n")
-                    path_to_file = os.path.realpath("download/random_data.csv")
+                    r, c = df.shape
+                    open("download/randomdata.txt", "w")
+                    with open("download/randomdata.txt", "a") as file_prime:
+                        for num in range(r):
+                            file_prime.write("insert into MOCK_DATA ("+ ", ".join(df.columns.values.tolist())+ ") values ('"+str("', '".join(str(x) for x in df.iloc[[num]].values.tolist()[0]))+ "');"+ '\n')
+
+                    path_to_file = os.path.realpath("download/randomdata.txt")
                     f = open(path_to_file, 'r')
                     with open("download/random_data.sql", 'w') as file:
                         file.write("".join(f))
