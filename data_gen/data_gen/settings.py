@@ -122,4 +122,4 @@ STATIC_URL = '/static/'
 # STATICFILES_DIRS = [
 #     os.path.join(BASE_DIR, 'static')
 # ]
-STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+STATIC_ROOT = "/home/ubuntu/django/random_data_generator/data_gen/static/"
