@@ -14,6 +14,87 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{% static 'css/styles.css'%}">
     <title>Random Data Generator</title>
+    <style>
+        * {
+            font-family: system-ui;
+        }
+        
+        body {
+            background-color: #EEEEEE;
+        }
+        
+        .head {
+            background-color: #696969;
+            color: White;
+            text-align: center;
+        }
+        
+        .myTable {
+            border-radius: 5px;
+        }
+        
+        .myTable td,
+        .myTable tr {
+            height: 30px;
+            width: 30px;
+            text-align: center;
+            vertical-align: middle;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .upperbox {
+            margin-top: 50px;
+            background: white;
+            box-shadow: 1px 4px 8px rgba(0, 0, 0, .6);
+        }
+        
+        .mycard {
+            height: 110px;
+            margin-top: 12px;
+            font-size: 8px;
+            padding: 0px;
+        }
+        
+        .subhead {
+            font-size: 8px;
+        }
+        
+        .mytitle {
+            font-size: 16px;
+        }
+        
+        #selectmodel {
+            cursor: pointer;
+        }
+        
+        .mycard:hover {
+            background-color: red;
+        }
+        
+        i #one :active {
+            background: olive;
+        }
+        
+        input[type=number] {
+            width: 20px;
+        }
+        /* Chrome, Safari, Edge, Opera */
+        
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        /* Firefox */
+        
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+        
+        .message {
+            text-align: center;
+        }
+    </style>
 
 </head>
 
@@ -437,6 +518,203 @@
     <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
     <script src="{% static 'js/data.js'%}"></script>
     <script src="{% static 'js/show.js'%}"></script>
+    <script>
+        function guid() {
+            p.value = 'GUID';
+        }
+
+        function rownumber() {
+            p.value = 'Row Number';
+        }
+
+        function firstname() {
+            p.value = 'First Name';
+        }
+
+        function lastname() {
+            p.value = 'Last Name';
+        }
+
+        function fullname() {
+            p.value = 'Full Name';
+        }
+
+        function firstnamemale() {
+            p.value = 'First Name(male)';
+        }
+
+        function firstnamefemale() {
+            p.value = 'First Name(female)';
+        }
+
+        function email() {
+            p.value = 'Email';
+        }
+
+        function ipaddress4() {
+            p.value = 'Ip address v4';
+        }
+
+        function ipaddress6() {
+            p.value = 'Ip address v6';
+        }
+
+        function username() {
+            p.value = 'Username';
+        }
+
+        function companyname() {
+            p.value = 'Comapny Name';
+        }
+
+        function jobtitle() {
+            p.value = 'Job Title';
+        }
+
+        function language() {
+            p.value = 'Language';
+        }
+
+        function programming() {
+            p.value = 'Programming Language';
+        }
+
+        function currency() {
+            p.value = 'Currency';
+        }
+
+        function symbol() {
+            p.value = 'Currency Symbol';
+        }
+
+        function number() {
+            p.value = 'Number';
+        }
+
+        function phone() {
+            p.value = 'Phone Number';
+        }
+
+
+        function domainname() {
+            p.value = 'Domain Name';
+        }
+
+
+        var p;
+
+        function selector(inputTag) {
+            p = inputTag;
+        };
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('tbody').sortable();
+            $('#previewbtn').click(function() {
+                // $(':disabled').each(function(e) {
+                //     $(this).removeAttr('disabled');
+                // })
+                var form = $('#myForm')
+                $('#previewbtn').removeAttr('disabled');
+                $.post('', $(form).serialize() + '&button=' + "Preview", function(data) {
+                    $('.message').html(data.table_content);
+                });
+                // $('input[type=text]').each(function() {
+                //     var val = parseInt($(this).val());
+                //     var name = $(this).attr("name")
+                //     if (val == 0 && name == "valEmpty") {
+                //         $(this).attr("disabled", true);
+                //     }
+                // });
+            });
+            // $('#downloadbtn').click(function() {
+            //     $(':disabled').each(function(e) {
+            //         $(this).removeAttr('disabled');
+            //     });
+            //     var form = $('#myForm')
+            //     $.post('', $(form).serialize() + '&button=' + "download", function(data) {
+            //         console.log(data)
+            //         $.fileDownload('download/random_data.xlsx')
+            //             .done(function() { alert('File download a success!'); })
+            //             .fail(function() { alert('File download failed!'); });
+
+            //     });
+            //     $('input[type=text]').each(function() {
+            //         var val = parseInt($(this).val());
+            //         var name = $(this).attr("name")
+            //         if (val == 0 && name == "valEmpty") {
+            //             $(this).attr("disabled", true);
+            //         }
+            //     });
+            // });
+        });
+
+
+
+        // function to close the delete the row
+        function SomeDeleteRowFunction(o) {
+            var table = o.parentNode.parentNode.parentNode.parentNode.parentNode;
+            var rowCount = table.rows.length;
+            var row = o.parentNode.parentNode.parentNode.parentNode;
+            var child = o.parentNode.parentNode.parentNode;
+            if (rowCount <= 2 || rowCount - 1 == child.rowIndex) {
+                alert('Cannot delete this row !!!')
+            } else {
+                var permission = confirm("Do you want to delete this row ?");
+                if (permission == true) {
+                    row.removeChild(child)
+                }
+            }
+        }
+
+        // 
+        var newvalue;
+
+        function changefun(o) {
+            newvalue = o.childNodes[0];
+            var inputVal = document.getElementById("exampleFormControlTextarea1");
+            inputVal.value = newvalue.value
+        }
+
+        function formulas() {
+            // Selecting the input element and get its value 
+            var inputVal = document.getElementById("exampleFormControlTextarea1");
+            newvalue.value = inputVal.value;
+            inputVal.value = '';
+            if (newvalue.value != "") {
+                newvalue.parentNode.style.color = "blue"
+            } else {
+                newvalue.parentNode.style.color = "black"
+            }
+        };
+
+        if (document.getElementsByClassName("testName").checked) {
+            document.getElementsByClassName('testNameHidden').value = 'on';
+        };
+        if (document.getElementsByClassName("test").disabled) {
+            document.getElementsByClassName('testHidden').value = "0";
+        };
+
+        function hero(o) {
+            // Get the checkbox
+            // Get the output text
+            var text = o.parentNode.parentNode.children[4].children[0].children[0];
+            // var text2 = o.parentNode.parentNode.children[4].children[0].children[1];
+            // If the checkbox is checked, display the output text
+
+            if (o.checked == true) {
+                text.disabled = false;
+                // text2.disabled = true;
+
+            } else {
+                text.disabled = true;
+                // text2.disabled = false;
+
+            }
+            // console.log(text2.disabled)
+            // console.log(text.disabled)
+        }
+    </script>
     <!-- scripts -->
 </body>
 
